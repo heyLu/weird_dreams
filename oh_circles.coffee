@@ -15,14 +15,10 @@ class Vector
 		new Vector { x: 0, y: 0 }, { x: @x / @length(), y: @y / @length() }
 	
 	add: (otherVector) ->
-		@x += otherVector.x
-		@y += otherVector.y
-		@
+		new Vector { x: 0, y: 0 }, { x: @x + otherVector.x, y: @y + otherVector.y }
 	
 	mult: (scalar) ->
-		@x *= scalar
-		@y *= scalar
-		@
+		new Vector { x: 0, y: 0 }, { x: @x * scalar, y: @y * scalar }
 
 class Circle
 	constructor: (@origin, @radius, @color = "#000", @fill = true) ->
@@ -50,7 +46,7 @@ class Circle
 	
 	accelerate: (vec, emit = true) ->
 		return @ unless @radius - vec.length() > 2
-		@movement.add vec
+		@movement = @movement.add vec
 		@radius -= vec.length()
 		@
 	
