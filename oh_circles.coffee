@@ -59,10 +59,10 @@ class Circle
 		return unless @alive
 
 		deltaRadius = otherCircle.distance(@) - @radius - otherCircle.radius
-		smallArea = deltaArea(deltaRadius, otherCircle.radius)
+		smallArea = deltaArea(deltaRadius, otherCircle.radius) / 4
 		newRadius = @radius + addArea(-smallArea, @radius)
 
-		otherCircle.radius += deltaRadius
+		otherCircle.radius += addArea(smallArea, otherCircle.radius)
 		otherCircle.alive = false if otherCircle.radius < 0
 
 		@movement = @movement.add @movement.sub(otherCircle.movement).mult(smallArea / @area())
