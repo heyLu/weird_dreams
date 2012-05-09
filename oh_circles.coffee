@@ -4,21 +4,27 @@ class Vector
 		@x = p2.x - p1.x
 		@y = p2.y - p1.y
 
+	@fromPoint: (x, y) ->
+		new Vector { x: 0, y: 0 }, { x: x, y: y }
+
 	@random: (p1 = { x: 0, y: 0}, p2 = { x: window.innerWidth * 0.01, y: window.innerHeight * 0.01}) ->
 		flippy = (n) -> if Math.random() < 0.5 then -1 else 1
 		new Vector p1, { x: flippy(p2.x), y: flippy(p2.y)}
+
+	copy: () ->
+		new Vector { x: 0, y: 0 }, { x: @x, y: @y }
 
 	length: () ->
 		@_length ?= Math.sqrt(@x * @x + @y * @y)
 	
 	normalize: () ->
-		new Vector { x: 0, y: 0 }, { x: @x / @length(), y: @y / @length() }
+		Vector.fromPoint @x / @length(), @y / @length()
 	
 	add: (otherVector) ->
-		new Vector { x: 0, y: 0 }, { x: @x + otherVector.x, y: @y + otherVector.y }
+		Vector.fromPoint @x + otherVector.x, @y + otherVector.y
 	
 	mult: (scalar) ->
-		new Vector { x: 0, y: 0 }, { x: @x * scalar, y: @y * scalar }
+		Vector.fromPoint @x * scalar, @y * scalar
 
 class Circle
 	constructor: (@origin, @radius, @color = "#000", @fill = true) ->
