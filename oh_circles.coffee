@@ -217,8 +217,8 @@ last = new Date().getTime()
 
 animate = () ->
 	requestAnimFrame animate
-	fps = new Date().getTime() - last
-	document.title = "O circles! (#{fps})"
+	fps = Math.round 1000 / (new Date().getTime() - last)
+	document.title = "Oh, circles! (#{fps})"
 	last = new Date().getTime()
 	w.animationLoop(fps)
 animate()
