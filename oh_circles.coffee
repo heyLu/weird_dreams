@@ -85,13 +85,11 @@ class Circle
 		if @origin.x - @radius < 0 or @origin.x + @radius > w.canvas.width
 			@origin.x += correct @origin.x, @radius, w.canvas.width
 			@movement.x *= -1
-			#console.log "x", @origin.x, @origin.y, @movement.x, @movement.y if @origin.x < 0
 		else if @origin.y - @radius < 0 or @origin.y + @radius > w.canvas.height
 			corr = correct @origin.y, @radius, w.canvas.height
 			y = @origin.y
 			@origin.y += corr
 			@movement.y *= -1
-			console.log "y", @origin.y, y, corr if @origin.y < 0
 
 		@origin.x += @movement.x
 		@origin.y += @movement.y
