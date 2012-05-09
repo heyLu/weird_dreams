@@ -23,6 +23,9 @@ class Vector
 	add: (otherVector) ->
 		Vector.fromPoint @x + otherVector.x, @y + otherVector.y
 	
+	sub: (otherVector) ->
+		Vector.fromPoint @x - otherVector.x, @y - otherVector.y
+
 	mult: (scalar) ->
 		Vector.fromPoint @x * scalar, @y * scalar
 
@@ -39,6 +42,8 @@ class Circle
 
 		new Circle { x: x, y: y }, radius, color, fill
 
+	area: () -> 2 * Math.PI * @radius * @radius
+
 	touches: (otherCircle) ->
 		console.log "Circle.touches: Warning", otherCircle unless otherCircle?
 		@radius > @distance(otherCircle) - otherCircle.radius
@@ -47,10 +52,21 @@ class Circle
 		new Vector(@origin, otherCircle.origin).length()
 
 	absorb: (otherCircle) ->
+		deltaArea = (d, r) -> (2 * r * d - d * d) * 2 * Math.PI
+		addArea = (a, r) -> -r + Math.sqrt(r * r + a / (2 * Math.PI))
+
 		return unless otherCircle.alive
 		return unless @alive
-		otherCircle.alive = false
-		@radius += otherCircle.radius * 0.25
+
+		deltaRadius = otherCircle.distance(@) - @radius - otherCircle.radius
+		smallArea = deltaArea(deltaRadius, otherCircle.radius)
+		newRadius = @radius + addArea(-smallArea, @radius)
+
+		otherCircle.radius += deltaRadius
+		otherCircle.alive = false if otherCircle.radius < 0
+
+		@movement = @movement.add @movement.sub(otherCircle.movement).mult(smallArea / @area())
+		@radius = newRadius
 		@
 	
 	accelerate: (vec, emit = true) ->
