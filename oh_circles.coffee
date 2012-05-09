@@ -41,8 +41,11 @@ class Circle
 
 	touches: (otherCircle) ->
 		console.log "Circle.touches: Warning", otherCircle unless otherCircle?
-		@radius > new Vector(@origin, otherCircle.origin).length() - otherCircle.radius
-	
+		@radius > @distance(otherCircle) - otherCircle.radius
+
+	distance: (otherCircle) ->
+		new Vector(@origin, otherCircle.origin).length()
+
 	absorb: (otherCircle) ->
 		return unless otherCircle.alive
 		return unless @alive
