@@ -118,8 +118,18 @@ class Circle
 		ctx.beginPath()
 		ctx.arc 0, 0, @radius, 0, 360
 
-		ctx[if @fill then "fill" else "stroke"]()
+		ctx.fill()
 
+		###
+		grad = ctx.createRadialGradient 0, 0, @radius - @radius * 0.2, 0, 0, @radius
+		grad.addColorStop 0, "rgba(255, 255, 255, #{if @alive then 0.8 else 0.3 })"
+		grad.addColorStop 0.6, "rgba(0, 0, 0, 0.6)"
+		grad.addColorStop 0.65, "rgba(0, 0, 0, 0.3)"
+		grad.addColorStop 0.70, "rgba(255, 255, 255, #{if @alive then 0.5 else 0.3 })"
+		grad.addColorStop 1, "rgba(255, 255, 255, #{if @alive then 0.8 else 0.3 })"
+		ctx.fillStyle = grad
+		ctx.fill()
+		###
 		ctx.shadowColor = "rgba(255, 255, 255, #{if @alive then 0.8 else 0.3 })"
 		ctx.shadowBlur = @radius * if @radius > w.self.radius then 0.6 else 0.3
 		ctx.stroke()
@@ -177,6 +187,12 @@ class World
 		index = @objects.indexOf obj
 		return if index is -1
 		@objects.splice index, 1
+
+	occupiedArea: () ->
+		occupied = 0
+		for circle in @objects
+			occupied += circle.area()
+		occupied += @self.area()
 	
 	recalc: () ->
 		@objects = @objects.concat @newObjects
@@ -242,13 +258,13 @@ class World
 window.w = World.random()
 w.draw()
 
-w.self.accelerate new Vector { x: 0, y: 0 }, { x: 0.5, y: 0.5 }, false
+w.self.accelerate new Vector({ x: 0, y: 0 }, { x: 0.5, y: 0.5 }), false
 last = new Date().getTime()
 
 animate = () ->
 	requestAnimFrame animate
 	fps = Math.round 1000 / (new Date().getTime() - last)
-	document.title = "Oh, circles! (#{fps})"
+	document.title = "osmotive. (#{fps})"
 	last = new Date().getTime()
 	w.animationLoop(fps)
 animate()
