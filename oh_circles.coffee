@@ -68,12 +68,25 @@ class Circle
 		@movement = @movement.add @movement.sub(otherCircle.movement).mult(smallArea / @area())
 		@radius = newRadius
 		@
+
+	emit: (vec) ->
+		deltaArea = (d, r) -> (2 * r * d - d * d) * 2 * Math.PI
+		addArea = (a) -> Math.sqrt a / (2 * Math.PI)
+
+		r = addArea deltaArea(vec.length(), @radius)
+		v = vec.mult(-(2 * Math.PI * r * r) / 4)
+		circle = new Circle { x: @origin.x - vec.mult(1/0.15).x * (@radius + r), y: @origin.y - vec.mult(1/0.15).y * (@radius + r) }, r
+		w.add circle._accelerate(v)
+
+	_accelerate: (vec) ->
+		@movement = @movement.add vec
+		@
 	
 	accelerate: (vec, emit = true) ->
 		return @ unless @radius - vec.length() > 2
-		@movement = @movement.add vec
+		@emit vec if emit
 		@radius -= vec.length()
-		@
+		@_accelerate vec
 	
 	move: () ->
 		correct = (pos, r, max) ->
