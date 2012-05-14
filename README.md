@@ -5,4 +5,4 @@ This is a little place where strange ideas live.
 ## Who?
 
 Currently, only *osmotive*, a shameless [Osmos](http://www.hemispheregames.com/osmos/)
-lives here. It feels very lonely right now.
+ripoff and a little grid-demo live here. They still feel very lonely.
