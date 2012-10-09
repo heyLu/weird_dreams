@@ -11,6 +11,17 @@ ctx.translate 50, 50
 ctx.rotate -Math.PI / 16
 ctx.scale 3, 3
 
+drawShadow = (rect, lightSource, ctx) ->
+	shadow = rect.shadowFromDirection lightSource, boundaries
+	
+	ctx.save()
+	ctx.fillStyle = "blue"
+	ctx.beginPath()
+	for point in shadow
+		ctx.lineTo point.e(1), point.e(2)
+	ctx.fill()
+	ctx.restore()
+
 draw = () ->
 	ctx.save()
 	ctx.clearRect 0, 0, canvas.clientWidth, canvas.clientHeight
@@ -31,24 +42,16 @@ draw = () ->
 
 	ctx.restore()
 
-	window.r = r = new Rect(60, 60, 10, 10)
-	shadow = r.shadowFromDirection lightSource, boundaries
+	shapes = [new Rect(60, 60, 10, 10),
+		new Rect(0, 0, 20, 20),
+		new Rect(30, 0, 10, 10),
+		new Rect(0, 50, 15, 15),
+		new Rect(100, 140, 10, 30)]
 	
-	ctx.save()
-	ctx.fillStyle = "blue"
-	ctx.beginPath()
-	for point in shadow
-		ctx.lineTo point.e(1), point.e(2)
-	ctx.fill()
-	ctx.restore()
-
-	lightSource.draw(ctx)
-
-	ctx.fillRect 0, 0, 20, 20
-	ctx.fillRect 30, 0, 10, 10
-	ctx.fillRect 0, 50, 15, 15
-	r.draw(ctx)
-
+	for rect in shapes
+		drawShadow(rect, lightSource, ctx)
+	for rect in shapes
+		rect.draw(ctx)
 
 	ctx.restore()
 
