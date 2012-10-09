@@ -1,5 +1,6 @@
 window.canvas = canvas = document.getElementById 'stage'
 window.ctx = ctx = canvas.getContext '2d'
+addContextCurrentTransform(ctx)
 
 window.lightSource = lightSource = Vector.create [70, 20, 0]
 window.boundaryX = Line.create([0, 180], [1, 0])
