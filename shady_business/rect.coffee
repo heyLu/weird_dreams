@@ -7,7 +7,8 @@ class Rect
 			Vector.create([@x, @y + @height, 0]),
 			Vector.create([@x + @width, @y + @height, 0])]
 		outerMostPoints = []
-		projectionLine = Line.createFromTo(corners[0], viewpoint).rotate(Math.PI/2, corners[0])
+		closestToViewpoint = corners.minBy (c) -> c.distanceFrom(viewpoint)
+		projectionLine = Line.createFromTo(closestToViewpoint, viewpoint).rotate(Math.PI/2, closestToViewpoint)
 
 		for corner in corners
 			intersection = projectionLine.intersectionWith(Line.createFromTo(corner, viewpoint))
