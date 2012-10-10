@@ -16,4 +16,4 @@ Line.prototype.draw = (context, scale = 20) ->
 	context.stroke()
 
 Line.prototype.scaleFactorOf = (vectorOnLine) ->
-	(vectorOnLine.e(1) - this.anchor.e(1)) / this.direction.e(1)
+	(vectorOnLine.e(1) - this.anchor.e(1)) / this.direction.e(1) or (vectorOnLine.e(2) - this.anchor.e(2)) / this.direction.e(2)

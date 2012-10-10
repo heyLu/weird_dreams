@@ -36,7 +36,7 @@ class Rect
 			sf = (el) -> sourceToCorner.scaleFactorOf el
 			candidates = intersections.filter((el) -> sf(el) > 0)
 			if candidates.length is 0
-				return []
+				throw new Error("No intersections with boundaries")
 			shadow.push candidates.minBy(sf).round()
 
 		if shadow[0].e(1) != shadow[1].e(1) and shadow[0].e(2) != shadow[1].e(2)
