@@ -1,5 +1,8 @@
-Vector.prototype.draw = (context, size = 1) ->
+Vector.prototype.draw = (context, color = "black", size = 1) ->
+	ctx.save()
+	ctx.fillStyle = color
 	context.fillRect this.e(1), this.e(2), size, size
+	ctx.restore()
 
 Line.createFromTo = (p1, p2) ->
 	p1 = p1.elements || p1
