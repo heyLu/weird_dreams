@@ -46,19 +46,22 @@ class Rect
 				boundaries[3].anchor,
 				boundaries[2].anchor,
 				Vector.create([boundaries[3].anchor.e(1), boundaries[2].anchor.e(2), 0])]
+			[minX, minY, maxX, maxY] = [topLeft.e(1), topLeft.e(2), bottomRight.e(1), bottomRight.e(2)]
 			[x1, y1] = shadow[0].elements
 			[x2, y2] = shadow[1].elements
 			
-			if y1 is topLeft.e(1) and x2 is topLeft.e(2)
+			if y1 is minY and x2 is minX
 				shadow.splice 1, 0, topLeft
-			else if x1 is 0 and y2 is bottomLeft.e(2)
+			else if x1 is minX and y2 is maxY
 				shadow.splice 1, 0, bottomLeft
-			else if x1 is topRight.e(1) and y2 is 0
+			else if x1 is maxX and y2 is minY
 				shadow.splice 1, 0, topRight
-			else if y1 is topRight.e(1) and x2 is bottomLeft.e(2)
+			else if y1 is maxY and x2 is maxX
 				shadow.splice 1, 0, bottomRight
-			else if y2 is topLeft.e(2) and y1 is bottomLeft.e(2)
+			else if y2 is minY and y1 is maxY
 				shadow.splice 1, 0, bottomRight, topRight
+			else if y1 is minY and y2 is maxY
+				shadow.splice 1, 0, topLeft, bottomLeft
 
 		shadow.unshift corners[0]
 		shadow.push corners[1]
