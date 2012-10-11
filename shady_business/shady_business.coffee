@@ -53,6 +53,8 @@ draw = () ->
 	for rect in shapes
 		rect.draw(ctx)
 
+	lightSource.draw(ctx, "green")
+
 	ctx.restore()
 
 draw()
