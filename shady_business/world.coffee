@@ -27,18 +27,18 @@ class World
 			shape.update()
 
 	draw: (context) ->
-		ctx.save()
-		ctx.strokeStyle = "gray"
-		ctx.beginPath()
-		ctx.lineTo 0, 0
-		ctx.lineTo 300, 0
-		ctx.lineTo 300, 300
-		ctx.lineTo 0, 300
-		ctx.lineTo 0, 0
-		ctx.stroke()
-		ctx.restore()
+		context.save()
+		context.strokeStyle = "gray"
+		context.beginPath()
+		context.lineTo 0, 0
+		context.lineTo 300, 0
+		context.lineTo 300, 300
+		context.lineTo 0, 300
+		context.lineTo 0, 0
+		context.stroke()
+		context.restore()
 
-		ctx.fillRect 0, 270, 300, 30
+		context.fillRect 0, 270, 300, 30
 
 		for shape in @shapes
 			shadow = shape.shadowFromDirection(@lightSource, @boundaries)
