@@ -7,6 +7,7 @@ ctx.rotate -Math.PI / 16
 
 window.w = w = new World()
 w.add new Rect(100, 100, 10, 30)
+w.add new Circle(105, 50, 7.5)
 
 w.draw(ctx)
 
