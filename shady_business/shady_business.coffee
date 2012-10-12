@@ -25,16 +25,17 @@ runAwayLoop = () ->
 	w.draw(ctx)
 runAwayLoop()
 
-###
 canvas.onmousemove = (ev) ->
 	mouseOnScreen = Vector.create [ev.clientX, ev.clientY, 1]
 	[a, b, c, d, e, f] = ctx.mozCurrentTransformInverse
 	transformMatrix = Matrix.create [[a, c, e], [b, d, f], [0, 0, 1]]
 	mouseTransformed = transformMatrix.multiply(mouseOnScreen).round()
-	window.lightSource = lightSource = Vector.create [
+	w.lightSource = Vector.create [
 		mouseTransformed.e(1), mouseTransformed.e(2), 0]
-	w.draw(ctx)
-###
+	w.lightSource.draw(ctx, "green")
 
 canvas.onmousedown = () ->
 	World.debug = !World.debug
+
+canvas.onmouseout = () ->
+	w.lightSource = Vector.create [155, 300, 0]
