@@ -6,8 +6,11 @@ ctx.translate 50, 50
 ctx.rotate -Math.PI / 16
 
 window.w = w = new World()
-w.add new Rect(100, 100, 10, 30)
-w.add new Circle(105, 50, 7.5)
+w.lightSource = Vector.create [155, 300, 0]
+for n in [0..4].concat([7..11])
+	w.add new Rect(n*25 + 10, 200, 10, 10)
+w.add new Rect(150, 100, 10, 30)
+w.add new Circle(155, 50, 7.5)
 
 w.draw(ctx)
 

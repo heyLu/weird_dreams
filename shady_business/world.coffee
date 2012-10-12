@@ -12,7 +12,7 @@ class World
 		@space.gravity = cp.v(0, 10)
 
 		@ground = new cp.SegmentShape @space.staticBody,
-			cp.v(0, 300), cp.v(300, 300), 0
+			cp.v(0, 270), cp.v(300, 270), 0
 		@ground.setFriction 1
 		@space.addShape @ground
 
@@ -38,6 +38,8 @@ class World
 		ctx.stroke()
 		ctx.restore()
 
+		ctx.fillRect 0, 270, 300, 30
+
 		for shape in @shapes
 			shadow = shape.shadowFromDirection(@lightSource, @boundaries)
 			context.save()
@@ -51,12 +53,13 @@ class World
 		for shape in @shapes
 			shape.draw(context)
 
-		context.save()
-		context.fillStyle = "red"
-		for arbiter in @space.arbiters
-			for contact in arbiter.contacts
-				context.fillRect contact.p.x, contact.p.y, 1, 1
-		context.restore()
+		if World.debug
+			context.save()
+			context.fillStyle = "red"
+			for arbiter in @space.arbiters
+				for contact in arbiter.contacts
+					context.fillRect contact.p.x, contact.p.y, 1, 1
+			context.restore()
 
 World.debug = false
 window.World = World
