@@ -2,24 +2,31 @@ class Rect
 	constructor: (@x, @y, @width, @height) ->
 
 	outerMostPoints: (viewpoint, ctx) ->
-		corners = [Vector.create([@x, @y, 0]),
+		[topLeft, topRight, bottomLeft, bottomRight] = [
+			Vector.create([@x, @y, 0]),
 			Vector.create([@x + @width, @y, 0]),
 			Vector.create([@x, @y + @height, 0]),
 			Vector.create([@x + @width, @y + @height, 0])]
-		outerMostPoints = []
-		closestToViewpoint = corners.minBy (c) -> c.distanceFrom(viewpoint)
-		projectionLine = Line.createFromTo(closestToViewpoint, viewpoint).rotate(Math.PI/2, closestToViewpoint)
+		[vx, vy] = [viewpoint.e(1), viewpoint.e(2)]
+		withinXRange = @x <= vx <= @x + @width
+		withinYRange = @y <= vy <= @y + @height
 
-		for corner in corners
-			intersection = projectionLine.intersectionWith(Line.createFromTo(corner, viewpoint))
-			corner.scale = projectionLine.scaleFactorOf intersection
-
-			if outerMostPoints[0] is undefined or corner.scale < outerMostPoints[0].scale
-				outerMostPoints[0] = corner
-			if outerMostPoints[1] is undefined or corner.scale > outerMostPoints[1].scale
-				outerMostPoints[1] = corner
-
-		outerMostPoints
+		if withinXRange and vy < @y
+			[topLeft, topRight]
+		else if withinXRange and vy > @y + @height
+			[bottomLeft, bottomRight]
+		else if withinYRange and vx < @x
+			[topLeft, bottomLeft]
+		else if withinYRange and vx > @x + @width
+			[topRight, bottomRight]
+		else if vx < @x and vy < @y
+			[bottomLeft, topRight]
+		else if vx > @x + @width and vy < @y
+			[topLeft, bottomRight]
+		else if vx > @x + @width and vy > @y + @height
+			[topRight, bottomLeft]
+		else if vx < @x and vy > @y + @height
+			[topLeft, bottomRight]
 
 	shadowFromDirection: (direction, boundaries) ->
 		corners = @outerMostPoints direction
@@ -40,28 +47,34 @@ class Rect
 				throw new Error("No intersections with boundaries")
 			shadow.push candidates.minBy(sf).round()
 
-		if shadow[0].e(1) != shadow[1].e(1) and shadow[0].e(2) != shadow[1].e(2)
-			[topLeft, topRight, bottomLeft, bottomRight] = [
-				boundaries[0].anchor,
-				boundaries[3].anchor,
-				boundaries[2].anchor,
-				Vector.create([boundaries[3].anchor.e(1), boundaries[2].anchor.e(2), 0])]
-			[minX, minY, maxX, maxY] = [topLeft.e(1), topLeft.e(2), bottomRight.e(1), bottomRight.e(2)]
-			[x1, y1] = shadow[0].elements
-			[x2, y2] = shadow[1].elements
-			
-			if y1 is minY and x2 is minX
-				shadow.splice 1, 0, topLeft
-			else if x1 is minX and y2 is maxY
-				shadow.splice 1, 0, bottomLeft
-			else if x1 is maxX and y2 is minY
-				shadow.splice 1, 0, topRight
-			else if y1 is maxY and x2 is maxX
-				shadow.splice 1, 0, bottomRight
-			else if y2 is minY and y1 is maxY
-				shadow.splice 1, 0, bottomRight, topRight
-			else if y1 is minY and y2 is maxY
+		[topLeft, topRight, bottomLeft, bottomRight] = [
+			boundaries[0].anchor,
+			boundaries[3].anchor,
+			boundaries[2].anchor,
+			Vector.create([boundaries[3].anchor.e(1), boundaries[2].anchor.e(2), 0])]
+		[minX, minY, maxX, maxY] = [topLeft.e(1), topLeft.e(2), bottomRight.e(1), bottomRight.e(2)]
+		[x1, y1] = shadow[0].elements
+		[x2, y2] = shadow[1].elements
+		[vx, vy] = [direction.e(1), direction.e(2)]
+		
+		if y1 is minY and x2 is minX or x1 is minX and y2 is minY
+			shadow.splice 1, 0, topLeft
+		else if y1 is minY and x2 is maxX or x1 is maxX and y2 is minY
+			shadow.splice 1, 0, topRight
+		else if x1 is maxX and y2 is maxY or y1 is maxY and x2 is maxX
+			shadow.splice 1, 0, bottomRight
+		else if x1 is minX and y2 is maxY or y1 is maxY and x2 is minX
+			shadow.splice 1, 0, bottomLeft
+		else if y1 is minY and y2 is maxY
+			if vx < @x
+				shadow.splice 1, 0, topRight, bottomRight
+			else
 				shadow.splice 1, 0, topLeft, bottomLeft
+		else if x1 is minX and x2 is maxX
+			if vy < @y
+				shadow.splice 1, 0, bottomLeft, bottomRight
+			else
+				shadow.splice 1, 0, topLeft, topRight
 
 		shadow.unshift corners[0]
 		shadow.push corners[1]
