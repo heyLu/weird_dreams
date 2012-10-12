@@ -38,8 +38,6 @@ class World
 		context.stroke()
 		context.restore()
 
-		context.fillRect 0, 270, 300, 30
-
 		for shape in @shapes
 			shadow = shape.shadowFromDirection(@lightSource, @boundaries)
 			context.save()
@@ -52,6 +50,8 @@ class World
 
 		for shape in @shapes
 			shape.draw(context)
+
+		context.fillRect 0, 270, 300, 30
 
 		if World.debug
 			context.save()
