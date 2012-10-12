@@ -4,6 +4,7 @@ addContextCurrentTransform(ctx)
 
 ctx.translate 50, 50
 ctx.rotate -Math.PI / 16
+ctx.scale 2, 2
 
 window.w = w = new World()
 w.lightSource = Vector.create [155, 300, 0]
@@ -15,9 +16,14 @@ w.add new Circle(155, 50, 7.5)
 w.draw(ctx)
 
 canvas.onmousemove = () ->
+
+runAwayLoop = () ->
+	requestAnimFrame runAwayLoop
+
 	ctx.clearRect 0, 0, canvas.width, canvas.height
 	w.update 1/60
 	w.draw(ctx)
+runAwayLoop()
 
 ###
 canvas.onmousemove = (ev) ->
