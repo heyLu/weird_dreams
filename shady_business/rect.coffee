@@ -1,6 +1,17 @@
 class Rect
 	constructor: (@x, @y, @width, @height) ->
 
+	addTo: (space) ->
+		moment = cp.momentForBox 1, @width, @height
+		@body = space.addBody new cp.Body(1, moment)
+		@body.setPos cp.v(@x + @width / 2, @y + @height / 2)
+
+		@shape = space.addShape new cp.BoxShape(@body, @width, @height)
+
+	update: () ->
+		@x = @body.p.x - @width / 2
+		@y = @body.p.y - @height / 2
+
 	outerMostPoints: (viewpoint, ctx) ->
 		[topLeft, topRight, bottomLeft, bottomRight] = [
 			Vector.create([@x, @y, 0]),

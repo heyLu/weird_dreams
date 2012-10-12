@@ -1,4 +1,4 @@
-all: fetch-coffeescript fetch-sylvester
+all: fetch-coffeescript fetch-sylvester fetch-chipmunk
 
 SYLVESTER=sylvester-0-1-3.zip
 
@@ -11,5 +11,9 @@ fetch-sylvester:
 	mv sylvester.js shady_business
 	rm ${SYLVESTER}
 
+fetch-chipmunk:
+	cd shady_business
+	./fetch https://raw.github.com/josephg/Chipmunk-js/master/cp.min.js
+
 clean:
-	rm -f coffee-script.js shady_business/sylvester.js
+	rm -f coffee-script.js shady_business/sylvester.js shady_business/cp.min.js
