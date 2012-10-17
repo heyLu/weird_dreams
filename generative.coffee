@@ -17,14 +17,31 @@ cur = () ->
 	landscape.currentNode.position
 
 landscape.currentNode.position.draw(ctx)
-ctx.beginPath()
-ctx.lineTo cur().e(1), cur().e(2)
 for n in [1..100]
 	landscape.nextNode()
-	ctx.lineTo cur().e(1), cur().e(2)
-	cur().draw(ctx)
-ctx.stroke()
 
-ctx.fillStyle = "red"
+draw = (n) ->
+	drawDelayed = () ->
+		if nodes.length > 1
+			ctx.beginPath()
+			[p1, p2] = nodes[0..1]
+			ctx.lineTo p1.position.e(1), p1.position.e(2)
+			ctx.lineTo p2.position.e(1), p2.position.e(2)
+			ctx.stroke()
+			p1.position.draw(ctx)
+			nodes.shift()
+			window.setTimeout drawDelayed, n
+		else
+			ctx.fillStyle = "green"
+			for p in landscape.fancyNodes
+				p.position.draw(ctx)
+
+	nodes = [].concat landscape.nodes
+	window.setTimeout drawDelayed, n
+
+draw 50
+
 for p in highpoints
-    p.draw(ctx)
+	ctx.fillStyle = "red"
+	p.draw(ctx)
+	ctx.fillStyle = "black"
