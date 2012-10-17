@@ -1,7 +1,6 @@
 window.Node = class Node
-	connections: []
-
 	constructor: (@position) ->
+		@connections = []
 
 	distanceFrom: (node) ->
 		@position.distanceFrom node.position
