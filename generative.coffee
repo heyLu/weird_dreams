@@ -30,6 +30,9 @@ draw = (n) ->
 			ctx.stroke()
 			p1.position.draw(ctx)
 			nodes.shift()
+			ctx.font = "3px sans-serif"
+			ctx.fillText "#{pos}:#{Math.round p1.position.e(1)},#{Math.round p1.position.e(2)}", p1.position.e(1), p1.position.e(2)
+			pos += 1
 			window.setTimeout drawDelayed, n
 		else
 			ctx.fillStyle = "green"
@@ -37,6 +40,8 @@ draw = (n) ->
 				p.position.draw(ctx)
 
 	nodes = [].concat landscape.nodes
+
+	pos = 0
 	window.setTimeout drawDelayed, n
 
 draw 50
