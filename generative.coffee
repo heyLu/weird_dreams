@@ -22,24 +22,24 @@ for n in [1..100]
 
 draw = (n) ->
 	drawDelayed = () ->
-		if nodes.length > 1
+		if landscape.nodes.length > pos
 			ctx.beginPath()
-			[p1, p2] = nodes[0..1]
-			ctx.lineTo p1.position.e(1), p1.position.e(2)
-			ctx.lineTo p2.position.e(1), p2.position.e(2)
-			ctx.stroke()
+			p1 = landscape.nodes[pos]
+			for p2 in p1.connections
+				ctx.beginPath()
+				ctx.lineTo p1.position.e(1), p1.position.e(2)
+				ctx.lineTo p2.position.e(1), p2.position.e(2)
+				ctx.stroke()
 			p1.position.draw(ctx)
-			nodes.shift()
-			ctx.font = "3px sans-serif"
-			ctx.fillText "#{pos}:#{Math.round p1.position.e(1)},#{Math.round p1.position.e(2)}", p1.position.e(1), p1.position.e(2)
+			if Landscape.debug
+				ctx.font = "3px sans-serif"
+				ctx.fillText "#{pos}:#{Math.round p1.position.e(1)},#{Math.round p1.position.e(2)}", p1.position.e(1), p1.position.e(2)
 			pos += 1
 			window.setTimeout drawDelayed, n
 		else
 			ctx.fillStyle = "green"
 			for p in landscape.fancyNodes
 				p.position.draw(ctx)
-
-	nodes = [].concat landscape.nodes
 
 	pos = 0
 	window.setTimeout drawDelayed, n
