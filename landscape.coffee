@@ -18,6 +18,7 @@ window.Landscape = class Landscape
 			newNode = closeNodes[0]
 			@fancyNodes.push newNode
 			@lastStep = Vector.createFromTo currentNode.position, newNode.position
+			currentNode.connections.push newNode
 			@currentNode = newNode
 		else
 			@lastStep = Vector.createFromTo currentNode.position, bestPosition
