@@ -26,7 +26,7 @@ window.Landscape = class Landscape
 			@currentNode = newNode
 	
 	_bestPositionNode: (currentNode, lastStep) ->
-		randomAngles = (Math.random() * Math.PI / 3 for n in [1..3])
+		randomAngles = (@_randomWithin(-Math.PI/3, Math.PI/3) for n in [1..3])
 		# continue in direction of previous node
 		# rotate around random angles
 		createCandidate = (angle) -> currentNode.position.add(lastStep).rotate(angle, currentNode.position)
@@ -35,6 +35,9 @@ window.Landscape = class Landscape
 		candidates.reduce (a, b) =>
 			[popA, popB] = [a, b].map @populationFunc
 			if popA > popB then a else b
+	
+	_randomWithin: (low, high) ->
+		low + Math.random() * (Math.abs low - high)
 	
 	nodesCloseTo: (node, minDistance) ->
 		closeNodes = []
