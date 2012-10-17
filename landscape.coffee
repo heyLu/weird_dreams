@@ -3,6 +3,7 @@
 
 window.Landscape = class Landscape
 	nodes: []
+	fancyNodes: []
 	
 	constructor: (@populationFunc, @currentNode = new Node(Vector.create [0, 0]),
 	              step = Vector.create [10, 0]) ->
@@ -10,20 +11,30 @@ window.Landscape = class Landscape
 		@nodes.push @currentNode
 
 	nextNode: (currentNode = @currentNode, lastStep = @lastStep) ->
+		bestPosition = @_bestPositionNode(currentNode, lastStep)
+		newNode = new Node(bestPosition)
+		closeNodes = @nodesCloseTo(newNode, 5)
+		if closeNodes.length >= 1
+			newNode = closeNodes[0]
+			@fancyNodes.push newNode
+			@lastStep = Vector.createFromTo currentNode.position, newNode.position
+			@currentNode = newNode
+		else
+			@lastStep = Vector.createFromTo currentNode.position, bestPosition
+			@nodes.push newNode
+			currentNode.connections.push newNode
+			@currentNode = newNode
+	
+	_bestPositionNode: (currentNode, lastStep) ->
 		randomAngles = (Math.random() * Math.PI / 3 for n in [1..3])
 		# continue in direction of previous node
 		# rotate around random angles
 		createCandidate = (angle) -> currentNode.position.add(lastStep).rotate(angle, currentNode.position)
 		candidates = (createCandidate(angle) for angle in randomAngles)
 		# choose node with highest population (??)
-		bestPosition = candidates.reduce (a, b) =>
+		candidates.reduce (a, b) =>
 			[popA, popB] = [a, b].map @populationFunc
 			if popA > popB then a else b
-		@lastStep = Vector.createFromTo currentNode.position, bestPosition
-		newNode = new Node(bestPosition)
-		@nodes.push newNode
-		currentNode.connections.push newNode
-		@currentNode = newNode
 	
 	nodesCloseTo: (node, minDistance) ->
 		closeNodes = []
