@@ -12,8 +12,8 @@ fetch-sylvester:
 	rm ${SYLVESTER}
 
 fetch-chipmunk:
-	cd shady_business
 	./fetch https://raw.github.com/josephg/Chipmunk-js/master/cp.min.js
+	mv cp.min.js shady_business
 
 clean:
 	rm -f coffee-script.js shady_business/sylvester.js shady_business/cp.min.js
