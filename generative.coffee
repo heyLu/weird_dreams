@@ -8,7 +8,14 @@ Vector.createFromTo = (p1, p2) ->
     direction = [p2[0] - p1[0], p2[1] - p1[1]]
     Vector.create direction
 
-ctx = document.getElementById('stage').getContext('2d')
+Line.createFromTo = (p1, p2) ->
+    p1 = p1.elements || p1
+    p2 = p2.elements || p2
+    direction = [p2[0] - p1[0], p2[1] - p1[1]]
+    Line.create p1, direction
+
+canvas = document.getElementById('stage')
+window.ctx = canvas.getContext('2d')
 ctx.scale 3, 3
 
 highpoints = [[50, 50], [100, 50], [75, 100]].map Vector.create
@@ -17,7 +24,7 @@ cur = () ->
 	landscape.currentNode.position
 
 landscape.currentNode.position.draw(ctx)
-for n in [1..100]
+for n in [1..500]
 	landscape.nextNode()
 
 draw = (n) ->
@@ -39,7 +46,11 @@ draw = (n) ->
 		else
 			ctx.fillStyle = "green"
 			for p in landscape.fancyNodes
-				p.position.draw(ctx)
+				p.draw(ctx)
+			ctx.fillStyle = "blue"
+			for [p1, p2] in landscape.conns
+				p1.draw(ctx)
+				p2.draw(ctx)
 
 	pos = 0
 	window.setTimeout drawDelayed, n
