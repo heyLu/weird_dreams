@@ -20,20 +20,22 @@
 			window.itrpr = function(formula) {
 				var _formula = function(x) { return x; };
 				try {
-					var formula_js =
-					formula.replace(/([0-9]+)(x|([a-z]+)\(x\))/g,
-						function(match, multiplier, rhs, math_fun) {
-							//console.log(arguments);
-							if (math_fun === undefined) {
-								return multiplier + " * " + rhs;
-							} else {
-								if (Math[math_fun]) {
-									return multiplier + " * " + "Math." + math_fun + "(x)";
-								} else {
-									throw new Error("'" + math_fun + "' not supported.");
-								}
-							}
-						});
+					var formula_js = formula.replace(/([0-9]+)x/g, function(match, multiplier) {
+						return multiplier + "*" + "x";
+					}).replace(/([0-9]*)e/g, function(match, multiplier) {
+						return (multiplier || "1") + "*" + "Math.E";
+					}).replace(/([0-9]*)pi/g, function(match, multiplier) {
+							return (multiplier || "1") + "*" + "Math.PI";
+					}).replace(/([0-9]*)([a-z]+)\((.*)\)/g, function(match, multiplier, fun, argument) {
+						if (Math[fun] !== undefined) {
+							return (multiplier || "1") + "*Math." + fun + "(" + argument + ")";
+						} else {
+							throw new Error("'" + fun + "' not allowed!");
+						}
+					}).replace(/([0-9]*)([a-z]+)\^([a-z]+|[0-9]+|\(.*\))/g,
+						function(match, multiplier, base, exponent) {
+							return (multiplier || "1") + "*" + "Math.pow(" + base + "," + exponent + ")";
+					});
 					//console.log(formula_js);
 					eval("_formula = function(x) { return (" + formula_js + "); }");
 				} catch (e) {
@@ -66,12 +68,16 @@
 
 				fun += String.fromCharCode(ev.keyCode);
 				funf.innerText = fun;
-				//console.log(fun);
 			};
 
 			document.body.onkeydown = function(ev) {
 				if (ev.keyCode == 8) { // Backspace
+					fun = fun.slice(0, fun.length - 1);
+					funf.innerText = fun;
+				} else if (ev.keyCode == 27) { // Escape
+					ctx.clearRect(0, 0, stage.width, stage.height);
 					fun = "";
+					funf.innerText = fun;
 				} else if (ev.keyCode == 13) { // Enter
 					draw_fun();
 					console.log(itrpr(fun));
