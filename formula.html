@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>.formula</title>
+	<meta charset="utf-8" />
+	<style type="text/css">
+		#stage, #fun {
+			position: absolute;
+			top: 0;
+		}
+	</style>
+	<script type="text/javascript">
+		window.addEventListener("load", function() {
+			var stage = document.getElementById("stage");
+			stage.height = window.innerHeight;
+			stage.width = window.innerWidth;
+			var ctx   = stage.getContext("2d");
+			var funf  = document.getElementById("fun");
+			var fun   = "";
+			window.itrpr = function(formula) {
+				var _formula = function(x) { return x; };
+				try {
+					var formula_js =
+					formula.replace(/([0-9]+)(x|([a-z]+)\(x\))/g,
+						function(match, multiplier, rhs, math_fun) {
+							//console.log(arguments);
+							if (math_fun === undefined) {
+								return multiplier + " * " + rhs;
+							} else {
+								if (Math[math_fun]) {
+									return multiplier + " * " + "Math." + math_fun + "(x)";
+								} else {
+									throw new Error("'" + math_fun + "' not supported.");
+								}
+							}
+						});
+					//console.log(formula_js);
+					eval("_formula = function(x) { return (" + formula_js + "); }");
+				} catch (e) {
+					//console.log(e);
+				}
+				return _formula;
+			};
+
+			var draw_fun = function() {
+				var fun_thing = itrpr(fun);
+				ctx.clearRect(0, 0, stage.width, stage.height);
+				ctx.lineWidth = 3;
+				ctx.beginPath();
+				for (var x = 0; x < stage.width / 9; x += 0.02) {
+					try {
+						var y = fun_thing(x);
+						ctx.lineTo(x * 10, stage.height / 2 - y * 10);
+					} catch (e) {
+						//console.log(e);
+						return;
+					}
+				}
+				ctx.stroke();
+			};
+
+			document.body.onkeypress = function(ev) {
+				if (ev.keyCode == 13) {
+					return;
+				}
+
+				fun += String.fromCharCode(ev.keyCode);
+				funf.innerText = fun;
+				//console.log(fun);
+			};
+
+			document.body.onkeydown = function(ev) {
+				if (ev.keyCode == 8) { // Backspace
+					fun = "";
+				} else if (ev.keyCode == 13) { // Enter
+					draw_fun();
+					console.log(itrpr(fun));
+				}
+			}
+		}, false);
+	</script>
+</head>
+
+<body>
+	<canvas id="stage" width="800" height="600">
+		Sorry, you should update your elderly browser to a version later
+		than 2010.
+	</canvas>
+
+	<p id="fun"></p>
+</body>
+</html>
