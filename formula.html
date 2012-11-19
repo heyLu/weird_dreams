@@ -23,18 +23,18 @@
 					var formula_js = formula.replace(/([0-9]+)x/g, function(match, multiplier) {
 						return multiplier + "*" + "x";
 					}).replace(/([0-9]*)e/g, function(match, multiplier) {
-						return (multiplier || "1") + "*" + "Math.E";
+						return "(" + (multiplier || "1") + "*" + "Math.E" + ")";
 					}).replace(/([0-9]*)pi/g, function(match, multiplier) {
-							return (multiplier || "1") + "*" + "Math.PI";
-					}).replace(/([0-9]*)([a-z]+)\((.*)\)/g, function(match, multiplier, fun, argument) {
+							return "(" + (multiplier || "1") + "*" + "Math.PI" + ")";
+					}).replace(/([0-9]*)([a-z]+)\((.*?)\)/g, function(match, multiplier, fun, argument) {
 						if (Math[fun] !== undefined) {
-							return (multiplier || "1") + "*Math." + fun + "(" + argument + ")";
+							return "(" + (multiplier || "1") + "*Math." + fun + "(" + argument + ")" + ")";
 						} else {
 							throw new Error("'" + fun + "' not allowed!");
 						}
-					}).replace(/([0-9]*)([a-z]+)\^([a-z]+|[0-9]+|\(.*\))/g,
+					}).replace(/([0-9]*)([a-z]+|[0-9]+|\(.*\))\^([a-z]+|[0-9]+|\(.*\))/g,
 						function(match, multiplier, base, exponent) {
-							return (multiplier || "1") + "*" + "Math.pow(" + base + "," + exponent + ")";
+							return "(" + (multiplier || "1") + "*" + "Math.pow(" + base + "," + exponent + ")" +")";
 					});
 					//console.log(formula_js);
 					eval("_formula = function(x) { return (" + formula_js + "); }");
@@ -49,10 +49,10 @@
 				ctx.clearRect(0, 0, stage.width, stage.height);
 				ctx.lineWidth = 3;
 				ctx.beginPath();
-				for (var x = 0; x < stage.width / 9; x += 0.02) {
+				for (var x = 0; x < stage.width; x += 0.5) {
 					try {
-						var y = fun_thing(x);
-						ctx.lineTo(x * 10, stage.height / 2 - y * 10);
+						var y = fun_thing(x / 10) * 10;
+						ctx.lineTo(x, stage.height / 2 - y);
 					} catch (e) {
 						//console.log(e);
 						return;
