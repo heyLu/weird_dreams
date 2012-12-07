@@ -82,7 +82,13 @@
 					draw_fun();
 					console.log(itrpr(fun));
 				}
-			}
+			};
+			
+			window.onresize = function() {
+				stage.width = window.innerWidth;
+				stage.height = window.innerHeight;
+				draw_fun();
+			};
 		}, false);
 	</script>
 </head>
