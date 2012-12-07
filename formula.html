@@ -66,18 +66,18 @@
 					return;
 				}
 
-				fun += String.fromCharCode(ev.keyCode);
-				funf.innerText = fun;
-			};
+				fun += String.fromCharCode(ev.charCode);
+				funf.innerHTML = fun;
+			;}
 
 			document.body.onkeydown = function(ev) {
 				if (ev.keyCode == 8) { // Backspace
 					fun = fun.slice(0, fun.length - 1);
-					funf.innerText = fun;
+					funf.innerHTML = fun;
 				} else if (ev.keyCode == 27) { // Escape
 					ctx.clearRect(0, 0, stage.width, stage.height);
 					fun = "";
-					funf.innerText = fun;
+					funf.innerHTML = fun;
 				} else if (ev.keyCode == 13) { // Enter
 					draw_fun();
 					console.log(itrpr(fun));
