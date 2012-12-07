@@ -62,7 +62,7 @@
 			};
 
 			document.body.onkeypress = function(ev) {
-				if (ev.keyCode == 13) {
+				if (ev.charCode == 0 || ev.ctrlKey || ev.altKey) {
 					return;
 				}
 
