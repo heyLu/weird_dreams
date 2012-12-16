@@ -20,7 +20,7 @@ draw = () ->
 	ctx.restore()
 
 animation = () ->
-	webkitRequestAnimationFrame animation
+	requestAnimFrame animation
 	draw()
 
 animation()
