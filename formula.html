@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>.formula</title>
+	<meta charset="utf-8" />
+	<style type="text/css">
+		#stage, #fun {
+			position: absolute;
+			top: 0;
+		}
+		#stage { left: 0; padding: 0; }
+	</style>
+	<script type="text/javascript">
+		window.addEventListener("load", function() {
+			var stage = document.getElementById("stage");
+			stage.height = window.innerHeight;
+			stage.width = window.innerWidth;
+			var ctx   = stage.getContext("2d");
+			var funf  = document.getElementById("fun");
+			var fun   = "";
+			window.itrpr = function(formula) {
+				var _formula = function(x) { return x; };
+				try {
+					var formula_js = formula.replace(/([0-9]+)x/g, function(match, multiplier) {
+						return multiplier + "*" + "x";
+					}).replace(/([0-9]*)e/g, function(match, multiplier) {
+						return "(" + (multiplier || "1") + "*" + "Math.E" + ")";
+					}).replace(/([0-9]*)pi/g, function(match, multiplier) {
+							return "(" + (multiplier || "1") + "*" + "Math.PI" + ")";
+					}).replace(/([0-9]*)([a-z]+)\((.*?)\)/g, function(match, multiplier, fun, argument) {
+						if (Math[fun] !== undefined) {
+							return "(" + (multiplier || "1") + "*Math." + fun + "(" + argument + ")" + ")";
+						} else {
+							throw new Error("'" + fun + "' not allowed!");
+						}
+					}).replace(/([0-9]*)([a-z]+|[0-9]+|\(.*\))\^([a-z]+|[0-9]+|\(.*\))/g,
+						function(match, multiplier, base, exponent) {
+							return "(" + (multiplier || "1") + "*" + "Math.pow(" + base + "," + exponent + ")" +")";
+					});
+					//console.log(formula_js);
+					eval("_formula = function(x) { return (" + formula_js + "); }");
+				} catch (e) {
+					//console.log(e);
+				}
+				return _formula;
+			};
+
+			var draw_fun = function() {
+				var fun_thing = itrpr(fun);
+				ctx.clearRect(0, 0, stage.width, stage.height);
+				ctx.lineWidth = 3;
+				ctx.beginPath();
+				for (var x = 0; x < stage.width; x += 0.5) {
+					try {
+						var y = fun_thing(x / 10) * 10;
+						ctx.lineTo(x, stage.height / 2 - y);
+					} catch (e) {
+						//console.log(e);
+						return;
+					}
+				}
+				ctx.stroke();
+			};
+
+			document.body.onkeypress = function(ev) {
+				if (ev.charCode == 0 || ev.ctrlKey || ev.altKey) {
+					return;
+				}
+
+				fun += String.fromCharCode(ev.charCode);
+				funf.innerHTML = fun;
+			;}
+
+			document.body.onkeydown = function(ev) {
+				if (ev.keyCode == 8) { // Backspace
+					fun = fun.slice(0, fun.length - 1);
+					funf.innerHTML = fun;
+				} else if (ev.keyCode == 27) { // Escape
+					ctx.clearRect(0, 0, stage.width, stage.height);
+					fun = "";
+					funf.innerHTML = fun;
+				} else if (ev.keyCode == 13) { // Enter
+					draw_fun();
+					console.log(itrpr(fun));
+				}
+			};
+			
+			window.onresize = function() {
+				stage.width = window.innerWidth;
+				stage.height = window.innerHeight;
+				draw_fun();
+			};
+		}, false);
+	</script>
+</head>
+
+<body>
+	<canvas id="stage" width="800" height="600">
+		Sorry, you should update your elderly browser to a version later
+		than 2010.
+	</canvas>
+
+	<p id="fun"></p>
+</body>
+</html>

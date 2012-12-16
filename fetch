@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if `which curl > /dev/null`; then
+	curl -O $@
+else
+	wget $@
+fi
