@@ -33,18 +33,18 @@
 		within a few regexes and in less than 6 hours total.</p>
 
 		<p>I rather like that you can explore math things quickly. For
-		example you can start out with <code>sin(x)</code> and then decide
-		that it doesn't look all that interesting and change it to
-		<code type="x-papill0n/formula">sin(x) + 0.1x</code> and be happy
-		that it looks a bit funny.</p>
+		example you can start out with <code type="x-papill0n.org/formula">sin(x)</code>
+		and then decide that it doesn't look all that interesting and
+		change it to <code type="x-papill0n.org/formula">sin(x) + 0.1x</code>
+		and be happy that it looks a bit funny.</p>
 
 		<p>A few other formula's that you might want to try:
 		
 			<ul>
-				<li><code>sin(x/3)*x^2*0.001</code></li>
-				<li><code>0.01x*x*0.001tan(x)</code></li>
-				<li><code>...</code></li>
-				<li><code>...</code></li>
+				<li><code type="x-papill0n.org/formula">sin(x/3)*x^2*0.001</code></li>
+				<li><code type="x-papill0n.org/formula">0.01x*x*0.001tan(x)</code></li>
+				<li><code type="x-papill0n.org/formula">...</code></li>
+				<li><code type="x-papill0n.org/formula">...</code></li>
 			</ul>
 		<p>
 	</div>
@@ -96,5 +96,21 @@
 		<p>Sleep well.</p>
 	</div>
 	</section>
+
+	<script type="text/javascript">
+	"use strict";
+
+	window.addEventListener("load",  function() {
+		var formulas = document.querySelectorAll("code[type='x-papill0n.org/formula']");
+
+		for (var i = 0; i < formulas.length; i++) {
+			(function(formula) {
+				formula.onclick = function() {
+					window.location = "./formula.html?f=" + formula.innerHTML;
+				};
+			})(formulas[i]);
+		}
+	});
+	</script>
 </body>
 </html>
