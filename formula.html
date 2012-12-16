@@ -27,7 +27,7 @@
 						return "(" + (multiplier || "1") + "*" + "Math.E" + ")";
 					}).replace(/([0-9]*)pi/g, function(match, multiplier) {
 							return "(" + (multiplier || "1") + "*" + "Math.PI" + ")";
-					}).replace(/([0-9]*)([a-z]+)\((.*?)\)/g, function(match, multiplier, fun, argument) {
+					}).replace(/([0-9]*|[0-9]+\.[0-9]+)([a-z]+)\((.*?)\)/g, function(match, multiplier, fun, argument) {
 						if (Math[fun] !== undefined) {
 							return "(" + (multiplier || "1") + "*Math." + fun + "(" + argument + ")" + ")";
 						} else {
