@@ -9,6 +9,12 @@
 			top: 0;
 		}
 		#stage { left: 0; padding: 0; }
+
+		#instructions {
+			position: absolute;
+
+			right: 1ex;
+		}
 	</style>
 	<script type="text/javascript">
 		window.addEventListener("load", function() {
@@ -117,5 +123,15 @@
 	</canvas>
 
 	<p id="fun"></p>
+
+	<div id="instructions">
+		<p>Type <em>math things</em> in here.</p>
+
+		<p>
+			<ul>
+				<li><code type="x-papill0n.org/formula">0.01sin(x)*x^2</code></li>
+			</ul>
+		</p>
+	</div>
 </body>
 </html>
