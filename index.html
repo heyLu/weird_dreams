@@ -1,1 +1,100 @@
-osmotive.html
+<!DOCTYPE html>
+<html>
+<head>
+	<title>weird dreams (most likely involving HTML5, CSS and CoffeeScript).</title>
+	<meta charset="utf-8" />
+
+	<style type="text/css">
+	#timeline {
+		margin: auto 20%;
+	}
+
+	.project { position: relative }
+	.project time {
+		position: absolute;
+
+		left: -10em;
+
+		font-size: smaller;
+	}
+	</style>
+</head>
+
+<body>
+	<section id="timeline">
+	<h1>weird_dreams</h1>
+	<h2>A few little things I made for you (and myself, too).</h2>
+
+	<div class="project">
+		<h3>formula.</h3>
+		<time datetime="2012-12-16">December 2012</time>
+		<p>An interactive formula editor, with a simple syntax that is as
+		close to what you would write on paper as is feasible to implement
+		within a few regexes and in less than 6 hours total.</p>
+
+		<p>I rather like that you can explore math things quickly. For
+		example you can start out with <code>sin(x)</code> and then decide
+		that it doesn't look all that interesting and change it to
+		<code type="x-papill0n/formula">sin(x) + 0.1x</code> and be happy
+		that it looks a bit funny.</p>
+
+		<p>A few other formula's that you might want to try:
+		
+			<ul>
+				<li><code>sin(x/3)*x^2*0.001</code></li>
+				<li><code>0.01x*x*0.001tan(x)</code></li>
+				<li><code>...</code></li>
+				<li><code>...</code></li>
+			</ul>
+		<p>
+	</div>
+
+	<div class="project">
+		<h3>generative.</h3>
+		<time datetime="2012-10-29">October 2012</time>
+		<p>Procedurally generated worlds fascinate me. I've been dabbling
+		with them for quite some time and this is the farthest I've gone with
+		them so far.</p>
+
+		<p>This demo is inspired by <a href="http://introversion.co.uk">Introversion's</a>
+		<a href="...">Subversion</a>. It uses the techniques layed out in
+		[paper], but doesn't implement all of it. Most notably it is missing
+		different pattern algorithms and smarter [things].</p>
+	</div>
+
+	<div class="project">
+		<h3>shady business</h3>
+		<time datetime="2012-10-12">October 2012</time>
+		<p><a href="http://thomaswasalone.com">Thomas Was Alone</a>.</p>
+
+		<p>The shading in the above mentioned game was one of the things that
+		I love about it. There are a lot of things to love about it, but I
+		wanted to experiment with it. (I'm not done yet.)</p>
+
+		<p>So I built a little demo with cubie things (and a ball) falling
+		down and casting shades around. You may wish to control the shadow
+		with your mouse or other pointing device.</p>
+	</div>
+
+	<div class="project">
+		<h3>osmotive.</h3>
+		<time datetime="2012-05-12">May 2012</time>
+		<p>As with the <em>shady business</em>, this little thing was
+		inspired by a game. That game is <a href="...">Osmos</a>. It is quite
+		beautiful and the growing mechanic fascinated me. So I built one for
+		the Web.</p>
+
+		<p class="absorb_them_all">ABSORB THEM ALL</p>
+	</div>
+
+	<div class="project">
+		<h3>zero.</h3>
+		<time datetime="2012-10-17">October 2012</time>
+
+		<p>The most soothing thing ever.</p>
+
+		<p>Sleep well.</p>
+	</div>
+	</section>
+</body>
+</html>
