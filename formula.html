@@ -15,6 +15,9 @@
 
 			right: 1ex;
 		}
+
+		code[type="x-papill0n.org/formula"] { border-bottom: 1px dotted }
+		code[type="x-papill0n.org/formula"]:hover { background-color: #ddd }
 	</style>
 	<script type="text/javascript">
 		window.addEventListener("load", function() {
@@ -112,6 +115,18 @@
 				funf.innerHTML = fun;
 				draw_fun();
 			}
+
+			var formulas = document.querySelectorAll("code[type='x-papill0n.org/formula']");
+			for (var i = 0; i < formulas.length; i++) {
+				(function(formula) {
+					formula.onclick = function() {
+						fun = formula.innerHTML;
+						funf.innerHTML = formula.innerHTML;
+						draw_fun();
+					};
+				})(formulas[i]);
+			}
+
 		}, false);
 	</script>
 </head>
