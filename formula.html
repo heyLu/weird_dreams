@@ -90,6 +90,22 @@
 				stage.height = window.innerHeight;
 				draw_fun();
 			};
+
+			window.parseParams = function() {
+				var params = {}
+				document.location.search.substr(1).split("&").forEach(function(strParam) {
+					var split = strParam.split("=");
+					params[split[0]] = decodeURIComponent(split[1]);
+				});
+				return params;
+			};
+
+			var params = parseParams();
+			if (params["f"] !== undefined) {
+				fun = params["f"];
+				funf.innerHTML = fun;
+				draw_fun();
+			}
 		}, false);
 	</script>
 </head>
