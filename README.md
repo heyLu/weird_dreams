@@ -16,5 +16,5 @@ quite as alone.
  	Alone](http://thomaswasalone.com).
 
  	If you like math, *beware*! You might not want to look at it. But if
- 	you're here to help (white knight, you), I'd be happy to here about
+ 	you're here to help (white knight, you), I'd be happy to hear about
  	stuff in an [issue](weird_dreams/issues).
