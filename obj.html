@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+	<title>.obj</title>
+	<meta charset="utf-8" />
+	<style type="text/css">
+	.block { display: block }
+	.resizable { resize: both }
+
+	code[data-type="obj"] {
+		display: block;
+		white-space: pre;
+	}
+	</style>
+</head>
+
+<body>
+	<code data-type="obj">{
+  "type": "markdown",
+  "text": "# .obj - everything is data, which gets rendered"
+}</code>
+	<code data-type="obj">{
+  "type": "audio",
+  "url": "file:///home/lu/m/musique/The Beatles/1011 The Beatles - Blackbird -1968-.mp3"
+}</code>
+	<code data-type="obj">{
+  "type": "image",
+  "url": "http://octodex.github.com/images/femalecodertocat.png"
+}</code>
+	<code data-type="obj">{
+  "type": "video/vimeo",
+  "id": "23557395"
+}</code>
+
+	<script type="text/javascript" src="http://papill0n.org/util.js"></script>
+	<script type="text/javascript" src="vimeo.js"></script>
+	<script type="text/javascript">
+		var objs = ary(qa("[data-type='obj']"));
+		var renderers = {
+			"audio": function(obj) {
+				var audioEl = document.createElement("audio");
+				audioEl.controls = true;
+				audioEl.src = obj.url;
+				return audioEl;
+			},
+			"page": function(obj) {
+				var pageEl = document.createElement("iframe");
+				pageEl.src = obj.url;
+				pageEl.classList.add("block", "resizable");
+				return pageEl;
+			},
+			"image": function(obj) {
+				var imgEl = document.createElement("img");
+				imgEl.src = obj.url;
+				imgEl.style.maxWidth = "300px";
+				return imgEl;
+			},
+			"video/vimeo": function(obj) {
+				var iframe = document.createElement("iframe");
+				var options = "?api=1&title=0&byline=0&portrait=0&player_id=vimeo" + obj.id;
+				iframe.id = "vimeo" + obj.id;
+				iframe.src = "http://player.vimeo.com/video/" + obj.id + options;
+				iframe.width = "400px";
+				iframe.height = "300px";
+				iframe.style.pointerEvents = "none";
+				var div = document.createElement("div");
+				div.appendChild(iframe);
+				div.addEventListener("click", function(ev) {
+					if (!ev.ctrlKey) {
+						vimeo(iframe).playPause();
+					}
+				});
+				return div;
+			}
+		};
+
+		objs.forEach(function(objEl) {
+			var obj = JSON.parse(objEl.textContent);
+			if (obj.type in renderers) {
+				var rendered = renderers[obj.type](obj);
+				rendered.classList.add('rendered');
+				document.body.replaceChild(rendered, objEl);
+			} else {
+				objEl.contentEditable = "true";
+				objEl.classList.add('rendered');
+			}
+		});
+
+		var makeAbsolute = function(obj) {
+			obj.style.position = "absolute";
+			obj.style.top = obj.offsetTop + "px";
+			obj.style.left = obj.offsetLeft + "px";
+		}
+		ary(qa(".rendered")).forEach(makeAbsolute);
+
+		var drag = null;
+		document.onmousedown = function(ev) {
+			if (ev.ctrlKey) {
+				drag = {
+					el: ev.target,
+					elStart: {x: ev.target.offsetLeft, y: ev.target.offsetTop},
+					mouseStart: {x: ev.clientX, y: ev.clientY}
+				}
+				ev.preventDefault();
+			}
+		}
+
+		document.onmousemove = function(ev) {
+			if (drag != null) {
+				drag.el.style.left = drag.elStart.x + ev.clientX - drag.mouseStart.x + 'px';
+				drag.el.style.top  = drag.elStart.y + ev.clientY - drag.mouseStart.y + 'px';
+			}
+		}
+
+		document.onmouseup = function(ev) {
+			drag = null;
+		}
+	</script>
+</body>
