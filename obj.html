@@ -29,7 +29,8 @@
 }</code>
 	<code data-type="obj">{
   "type": "video/vimeo",
-  "id": "23557395"
+  "id": "23557395",
+  "time": 120
 }</code>
 
 	<script type="text/javascript" src="http://papill0n.org/util.js"></script>
@@ -63,6 +64,12 @@
 				iframe.width = "400px";
 				iframe.height = "300px";
 				iframe.style.pointerEvents = "none";
+				if (obj.time) {
+					iframe.onload = function() {
+						vimeo(iframe).seekTo(obj.time);
+						vimeo(iframe).pause();
+					}
+				}
 				var div = document.createElement("div");
 				div.appendChild(iframe);
 				div.addEventListener("click", function(ev) {
