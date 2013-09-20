@@ -1,0 +1,21 @@
+{
+  "objects": {
+    "md1": {
+      "type": "markdown",
+      "text": "# .obj - everything is data, which gets rendered"
+    },
+    "audio1": {
+      "type": "audio",
+      "url": "file:///home/lu/m/musique/The Beatles/1011 The Beatles - Blackbird -1968-.mp3"
+    },
+    "img1": {
+      "type": "image",
+      "url": "http://octodex.github.com/images/femalecodertocat.png"
+    }, "video1":
+    {
+      "type": "video/vimeo",
+      "id": "23557395",
+      "time": 120
+    }
+  }
+}

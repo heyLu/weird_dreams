@@ -7,7 +7,7 @@
 	.block { display: block }
 	.resizable { resize: both }
 
-	code[data-type="obj"] {
+	code {
 		display: block;
 		white-space: pre;
 	}
@@ -15,29 +15,16 @@
 </head>
 
 <body>
-	<code data-type="obj">{
-  "type": "markdown",
-  "text": "# .obj - everything is data, which gets rendered"
-}</code>
-	<code data-type="obj">{
-  "type": "audio",
-  "url": "file:///home/lu/m/musique/The Beatles/1011 The Beatles - Blackbird -1968-.mp3"
-}</code>
-	<code data-type="obj">{
-  "type": "image",
-  "url": "http://octodex.github.com/images/femalecodertocat.png"
-}</code>
-	<code data-type="obj">{
-  "type": "video/vimeo",
-  "id": "23557395",
-  "time": 120
-}</code>
-
 	<script type="text/javascript" src="http://papill0n.org/util.js"></script>
 	<script type="text/javascript" src="vimeo.js"></script>
 	<script type="text/javascript">
-		var objs = ary(qa("[data-type='obj']"));
 		var renderers = {
+			"default": function(obj) {
+				var codeEl = document.createElement("code");
+				codeEl.textContent = JSON.stringify(obj, null, "  ");
+				codeEl.contentEditable = true;
+				return codeEl;
+			},
 			"audio": function(obj) {
 				var audioEl = document.createElement("audio");
 				audioEl.controls = true;
@@ -81,24 +68,40 @@
 			}
 		};
 
-		objs.forEach(function(objEl) {
-			var obj = JSON.parse(objEl.textContent);
+		var renderObj = function(obj) {
+			var objEl;
 			if (obj.type in renderers) {
-				var rendered = renderers[obj.type](obj);
-				rendered.classList.add('rendered');
-				document.body.replaceChild(rendered, objEl);
+				objEl = renderers[obj.type](obj);
 			} else {
-				objEl.contentEditable = "true";
-				objEl.classList.add('rendered');
+				objEl = renderers["default"](obj);
 			}
-		});
-
-		var makeAbsolute = function(obj) {
-			obj.style.position = "absolute";
-			obj.style.top = obj.offsetTop + "px";
-			obj.style.left = obj.offsetLeft + "px";
+			objEl.classList.add('rendered');
+			return objEl;
 		}
-		ary(qa(".rendered")).forEach(makeAbsolute);
+
+		var absolutePositionRenderer = function(parentNode, objs) {
+			objs.forEach(function(obj) {
+				var objEl = renderObj(obj);
+				objEl.style.position = "absolute";
+				objEl.style.top = "0px";
+				objEl.style.left = "0px";
+				parentNode.appendChild(objEl);
+			});
+		}
+
+		req({url: "/obj.json",
+			cb: function(ev) {
+				var req = ev.target;
+				if (req.readyState == XMLHttpRequest.DONE) {
+					var data = JSON.parse(req.responseText);
+					var objs = [];
+					for (var id in data.objects) {
+						objs.push(data.objects[id]);
+					}
+					absolutePositionRenderer(document.body, objs);
+				}
+			}
+		}).send();
 
 		var drag = null;
 		document.onmousedown = function(ev) {
