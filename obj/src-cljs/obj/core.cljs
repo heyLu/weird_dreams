@@ -13,7 +13,7 @@
 (.send
  (js/req
   (js-obj
-   "url" "/obj.json"
+   "url" "../obj.json"
    "cb" (fn [ev]
           (let [req (.-target ev)]
             (when (= (.-readyState req) js/XMLHttpRequest.DONE)
