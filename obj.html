@@ -34,8 +34,12 @@
 			"page": function(obj) {
 				var pageEl = document.createElement("iframe");
 				pageEl.src = obj.url;
+				pageEl.style.pointerEvents = "none";
+				pageEl.style.backgroundColor = "white";
 				pageEl.classList.add("block", "resizable");
-				return pageEl;
+				var div = document.createElement("div");
+				div.appendChild(pageEl);
+				return div;
 			},
 			"image": function(obj) {
 				var imgEl = document.createElement("img");

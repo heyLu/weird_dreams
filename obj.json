@@ -11,11 +11,15 @@
     "img1": {
       "type": "image",
       "url": "http://octodex.github.com/images/femalecodertocat.png"
-    }, "video1":
-    {
+    },
+    "video1": {
       "type": "video/vimeo",
       "id": "23557395",
       "time": 120
+    },
+    "page1": {
+      "type": "page",
+      "url": "http://papill0n.org"
     }
   }
 }
