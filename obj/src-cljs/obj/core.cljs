@@ -18,9 +18,7 @@
           (let [req (.-target ev)]
             (when (= (.-readyState req) js/XMLHttpRequest.DONE)
               (let [data (js->clj (js/JSON.parse (.-responseText req)))]
-                (abs-pos-renderer js/document.body (map clj->js (vals (get data "objects")))))))))
-  
-))
+                (abs-pos-renderer js/document.body (map clj->js (vals (get data "objects")))))))))))
 
 (def ^:dynamic drag nil)
 
