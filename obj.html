@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+	<title>.obj</title>
+	<meta charset="utf-8" />
+	<style type="text/css">
+	.block { display: block }
+	.resizable { resize: both }
+
+	code {
+		display: block;
+		white-space: pre;
+	}
+	</style>
+</head>
+
+<body>
+	<script type="text/javascript" src="http://papill0n.org/util.js"></script>
+	<script type="text/javascript" src="vimeo.js"></script>
+	<script type="text/javascript">
+		var renderers = {
+			"default": function(obj) {
+				var codeEl = document.createElement("code");
+				codeEl.textContent = JSON.stringify(obj, null, "  ");
+				codeEl.contentEditable = true;
+				return codeEl;
+			},
+			"audio": function(obj) {
+				var audioEl = document.createElement("audio");
+				audioEl.controls = true;
+				audioEl.src = obj.url;
+				return audioEl;
+			},
+			"page": function(obj) {
+				var pageEl = document.createElement("iframe");
+				pageEl.src = obj.url;
+				pageEl.style.pointerEvents = "none";
+				pageEl.style.backgroundColor = "white";
+				pageEl.classList.add("block", "resizable");
+				var div = document.createElement("div");
+				div.appendChild(pageEl);
+				return div;
+			},
+			"image": function(obj) {
+				var imgEl = document.createElement("img");
+				imgEl.src = obj.url;
+				imgEl.style.maxWidth = "300px";
+				return imgEl;
+			},
+			"video/vimeo": function(obj) {
+				var iframe = document.createElement("iframe");
+				var options = "?api=1&title=0&byline=0&portrait=0&player_id=vimeo" + obj.id;
+				iframe.id = "vimeo" + obj.id;
+				iframe.src = "http://player.vimeo.com/video/" + obj.id + options;
+				iframe.width = "400px";
+				iframe.height = "300px";
+				iframe.style.pointerEvents = "none";
+				if (obj.time) {
+					iframe.onload = function() {
+						vimeo(iframe).seekTo(obj.time);
+						vimeo(iframe).pause();
+					}
+				}
+				var div = document.createElement("div");
+				div.appendChild(iframe);
+				div.addEventListener("click", function(ev) {
+					if (!ev.ctrlKey) {
+						vimeo(iframe).playPause();
+					}
+				});
+				return div;
+			}
+		};
+
+		var renderObj = function(obj) {
+			var objEl;
+			if (obj.type in renderers) {
+				objEl = renderers[obj.type](obj);
+			} else {
+				objEl = renderers["default"](obj);
+			}
+			objEl.classList.add('rendered');
+			return objEl;
+		}
+
+		var absolutePositionRenderer = function(parentNode, objs) {
+			objs.forEach(function(obj) {
+				var objEl = renderObj(obj);
+				objEl.style.position = "absolute";
+				objEl.style.top = "0px";
+				objEl.style.left = "0px";
+				parentNode.appendChild(objEl);
+			});
+		}
+
+		req({url: "/obj.json",
+			cb: function(ev) {
+				var req = ev.target;
+				if (req.readyState == XMLHttpRequest.DONE) {
+					var data = JSON.parse(req.responseText);
+					var objs = [];
+					for (var id in data.objects) {
+						objs.push(data.objects[id]);
+					}
+					absolutePositionRenderer(document.body, objs);
+				}
+			}
+		}).send();
+
+		var drag = null;
+		document.onmousedown = function(ev) {
+			if (ev.ctrlKey) {
+				drag = {
+					el: ev.target,
+					elStart: {x: ev.target.offsetLeft, y: ev.target.offsetTop},
+					mouseStart: {x: ev.clientX, y: ev.clientY}
+				}
+				ev.preventDefault();
+			}
+		}
+
+		document.onmousemove = function(ev) {
+			if (drag != null) {
+				drag.el.style.left = drag.elStart.x + ev.clientX - drag.mouseStart.x + 'px';
+				drag.el.style.top  = drag.elStart.y + ev.clientY - drag.mouseStart.y + 'px';
+			}
+		}
+
+		document.onmouseup = function(ev) {
+			drag = null;
+		}
+	</script>
+</body>
