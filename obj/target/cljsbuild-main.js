@@ -21346,15 +21346,15 @@ goog.require("cljs.core");
 goog.require("obj.render");
 goog.require("obj.render");
 obj.core.abs_pos_renderer = function abs_pos_renderer(parent_node, objs) {
-  var G__16940 = cljs.core.seq.call(null, objs);
+  var G__17582 = cljs.core.seq.call(null, objs);
   while(true) {
-    if(G__16940) {
-      var obj__$1 = cljs.core.first.call(null, G__16940);
-      var obj_el_16941 = obj.render.render.call(null, obj__$1);
-      obj.render.set_attributes_BANG_.call(null, obj_el_16941, cljs.core.ObjMap.fromObject(["\ufdd0:style"], {"\ufdd0:style":cljs.core.ObjMap.fromObject(["\ufdd0:position", "\ufdd0:top", "\ufdd0:left"], {"\ufdd0:position":"absolute", "\ufdd0:top":"0px", "\ufdd0:left":"0px"})}));
-      parent_node.appendChild(obj_el_16941);
-      var G__16942 = cljs.core.next.call(null, G__16940);
-      G__16940 = G__16942;
+    if(G__17582) {
+      var obj__$1 = cljs.core.first.call(null, G__17582);
+      var obj_el_17583 = obj.render.render.call(null, obj__$1);
+      obj.render.set_attributes_BANG_.call(null, obj_el_17583, cljs.core.ObjMap.fromObject(["\ufdd0:style"], {"\ufdd0:style":cljs.core.ObjMap.fromObject(["\ufdd0:position", "\ufdd0:top", "\ufdd0:left"], {"\ufdd0:position":"absolute", "\ufdd0:top":"0px", "\ufdd0:left":"0px"})}));
+      parent_node.appendChild(obj_el_17583);
+      var G__17584 = cljs.core.next.call(null, G__17582);
+      G__17582 = G__17584;
       continue
     }else {
       return null
@@ -21362,7 +21362,7 @@ obj.core.abs_pos_renderer = function abs_pos_renderer(parent_node, objs) {
     break
   }
 };
-req({"url":"/obj.json", "cb":function(ev) {
+req({"url":"../obj.json", "cb":function(ev) {
   var req = ev.target;
   if(cljs.core._EQ_.call(null, req.readyState, XMLHttpRequest.DONE)) {
     var data = cljs.core.js__GT_clj.call(null, JSON.parse(req.responseText));
@@ -21383,10 +21383,10 @@ obj.core.start_move_obj = function start_move_obj(ev) {
 };
 obj.core.assoc_in_STAR_ = function() {
   var assoc_in_STAR___delegate = function(m, kvs) {
-    return cljs.core.reduce.call(null, function(m__$1, p__16945) {
-      var vec__16946 = p__16945;
-      var sel = cljs.core.nth.call(null, vec__16946, 0, null);
-      var v = cljs.core.nth.call(null, vec__16946, 1, null);
+    return cljs.core.reduce.call(null, function(m__$1, p__17587) {
+      var vec__17588 = p__17587;
+      var sel = cljs.core.nth.call(null, vec__17588, 0, null);
+      var v = cljs.core.nth.call(null, vec__17588, 1, null);
       return cljs.core.assoc_in.call(null, m__$1, sel, v)
     }, m, cljs.core.partition.call(null, 2, kvs))
   };
@@ -21398,9 +21398,9 @@ obj.core.assoc_in_STAR_ = function() {
     return assoc_in_STAR___delegate.call(this, m, kvs)
   };
   assoc_in_STAR_.cljs$lang$maxFixedArity = 1;
-  assoc_in_STAR_.cljs$lang$applyTo = function(arglist__16947) {
-    var m = cljs.core.first(arglist__16947);
-    var kvs = cljs.core.rest(arglist__16947);
+  assoc_in_STAR_.cljs$lang$applyTo = function(arglist__17589) {
+    var m = cljs.core.first(arglist__17589);
+    var kvs = cljs.core.rest(arglist__17589);
     return assoc_in_STAR___delegate(m, kvs)
   };
   assoc_in_STAR_.cljs$lang$arity$variadic = assoc_in_STAR___delegate;
@@ -21410,16 +21410,16 @@ obj.core.move_obj = function move_obj(ev) {
   if(obj.core.drag == null) {
     return null
   }else {
-    var map__16951 = obj.core.drag;
-    var map__16951__$1 = cljs.core.seq_QMARK_.call(null, map__16951) ? cljs.core.apply.call(null, cljs.core.hash_map, map__16951) : map__16951;
-    var map__16952 = cljs.core._lookup.call(null, map__16951__$1, "\ufdd0:elStart", null);
-    var map__16952__$1 = cljs.core.seq_QMARK_.call(null, map__16952) ? cljs.core.apply.call(null, cljs.core.hash_map, map__16952) : map__16952;
-    var ex = cljs.core._lookup.call(null, map__16952__$1, "\ufdd0:x", null);
-    var ey = cljs.core._lookup.call(null, map__16952__$1, "\ufdd0:y", null);
-    var map__16953 = cljs.core._lookup.call(null, map__16951__$1, "\ufdd0:mouseStart", null);
-    var map__16953__$1 = cljs.core.seq_QMARK_.call(null, map__16953) ? cljs.core.apply.call(null, cljs.core.hash_map, map__16953) : map__16953;
-    var sx = cljs.core._lookup.call(null, map__16953__$1, "\ufdd0:x", null);
-    var sy = cljs.core._lookup.call(null, map__16953__$1, "\ufdd0:y", null);
+    var map__17593 = obj.core.drag;
+    var map__17593__$1 = cljs.core.seq_QMARK_.call(null, map__17593) ? cljs.core.apply.call(null, cljs.core.hash_map, map__17593) : map__17593;
+    var map__17594 = cljs.core._lookup.call(null, map__17593__$1, "\ufdd0:elStart", null);
+    var map__17594__$1 = cljs.core.seq_QMARK_.call(null, map__17594) ? cljs.core.apply.call(null, cljs.core.hash_map, map__17594) : map__17594;
+    var ex = cljs.core._lookup.call(null, map__17594__$1, "\ufdd0:x", null);
+    var ey = cljs.core._lookup.call(null, map__17594__$1, "\ufdd0:y", null);
+    var map__17595 = cljs.core._lookup.call(null, map__17593__$1, "\ufdd0:mouseStart", null);
+    var map__17595__$1 = cljs.core.seq_QMARK_.call(null, map__17595) ? cljs.core.apply.call(null, cljs.core.hash_map, map__17595) : map__17595;
+    var sx = cljs.core._lookup.call(null, map__17595__$1, "\ufdd0:x", null);
+    var sy = cljs.core._lookup.call(null, map__17595__$1, "\ufdd0:y", null);
     var mx = ev.clientX;
     var my = ev.clientY;
     return obj.render.set_attributes_BANG_.call(null, (new cljs.core.Keyword("\ufdd0:el")).call(null, obj.core.drag), cljs.core.ObjMap.fromObject(["\ufdd0:style"], {"\ufdd0:style":cljs.core.ObjMap.fromObject(["\ufdd0:left", "\ufdd0:top"], {"\ufdd0:left":[cljs.core.str(ex + mx + -sx), cljs.core.str("px")].join(""), "\ufdd0:top":[cljs.core.str(ey + my + -sy), cljs.core.str("px")].join("")})}))
@@ -21428,7 +21428,7 @@ obj.core.move_obj = function move_obj(ev) {
 obj.core.stop_move_obj = function stop_move_obj(ev) {
   return obj.core.drag = null
 };
-var G__16954_16955 = document;
-G__16954_16955.addEventListener("mousedown", obj.core.start_move_obj);
-G__16954_16955.addEventListener("mousemove", obj.core.move_obj);
-G__16954_16955.addEventListener("mouseup", obj.core.stop_move_obj);
+var G__17596_17597 = document;
+G__17596_17597.addEventListener("mousedown", obj.core.start_move_obj);
+G__17596_17597.addEventListener("mousemove", obj.core.move_obj);
+G__17596_17597.addEventListener("mouseup", obj.core.stop_move_obj);
