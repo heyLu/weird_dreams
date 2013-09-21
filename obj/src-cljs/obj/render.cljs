@@ -1,9 +1,17 @@
 (ns obj.render)
 
+(defn render-with [renderer obj]
+  (let [renderer (if (string? renderer)
+                   (get *renderers* renderer)
+                   renderer)
+        obj-el (renderer obj)]
+    (aset obj-el "obj" obj)
+    obj-el))
+
 (defn ^:export render [obj]
   (let [renderer (or (get *renderers* (.-type obj))
                      (get *renderers* "default"))]
-    (renderer obj)))
+    (render-with renderer obj)))
 
 (defn set-attributes! [obj attributes]
   (doseq [[k v] attributes]
