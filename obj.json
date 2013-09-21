@@ -20,6 +20,14 @@
     "page1": {
       "type": "page",
       "url": "http://papill0n.org"
+    },
+    "list1": {
+      "type": "list",
+      "children": [
+        {"type": "text", "text": "hi!"},
+        {"type": "text", "text": "hullo!"},
+        {"type": "image", "url": "http://octodex.github.com/images/octoliberty.png"}
+      ]
     }
   }
 }

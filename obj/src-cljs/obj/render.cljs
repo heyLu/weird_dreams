@@ -1,5 +1,10 @@
 (ns obj.render)
 
+(defn ^:export render [obj]
+  (let [renderer (or (get *renderers* (.-type obj))
+                     (get *renderers* "default"))]
+    (renderer obj)))
+
 (defn set-attributes! [obj attributes]
   (doseq [[k v] attributes]
     (if (map? v)
@@ -55,9 +60,10 @@
                                           (fn [ev]
                                             (when (not (.-ctrlKey ev))
                                               (.playPause (js/vimeo iframe))))))))
+   "list" (fn [obj]
+            (let [list (create-element "ul")]
+              (doseq [child-obj (.-children obj)]
+                (.appendChild list (doto (create-element "li" :style {:pointerEvents "none"})
+                                     (.appendChild (render child-obj)))))
+              list))
   })
-
-(defn ^:export render [obj]
-  (let [renderer (or (get *renderers* (.-type obj))
-                     (get *renderers* "default"))]
-    (renderer obj)))
