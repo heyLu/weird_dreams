@@ -31,7 +31,10 @@
   {"default" (fn [obj]
               (create-element "code"
                               :textContent (js/JSON.stringify obj nil "  ")
-                              :contentEditable true))
+                              :contentEditable true
+                              :oninput (fn [ev]
+                                         (let [el (.-target ev)]
+                                           (aset el "obj" (js/JSON.parse (.-textContent el)))))))
    "audio" (fn [obj]
             (create-element "audio"
                             :controls true
