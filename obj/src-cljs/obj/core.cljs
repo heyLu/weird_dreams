@@ -1,5 +1,8 @@
 (ns obj.core
-  (:use [obj.render :only (render set-attributes!)]))
+  (:use [obj.render :only (render render-with set-attributes!)]))
+
+(defn obj-of [el]
+  (.-obj el))
 
 (defn abs-pos-renderer [parent-node objs]
   (doseq [obj objs]
@@ -18,9 +21,7 @@
           (let [req (.-target ev)]
             (when (= (.-readyState req) js/XMLHttpRequest.DONE)
               (let [data (js->clj (js/JSON.parse (.-responseText req)))]
-                (abs-pos-renderer js/document.body (map clj->js (vals (get data "objects")))))))))
-  
-))
+                (abs-pos-renderer js/document.body (map clj->js (vals (get data "objects")))))))))))
 
 (def ^:dynamic drag nil)
 
@@ -54,7 +55,24 @@
 (defn stop-move-obj [ev]
   (set! drag nil))
 
+(defn replace-element [old new]
+  (let [parent (.-parentElement old)]
+    (.replaceChild parent new old)))
+
+(defn toggle-raw-view [ev]
+  (when (.-shiftKey ev)
+    (let [el (.-target ev)
+          raw? (= (.toLowerCase (.-tagName el)) "code")
+          obj (obj-of el)
+          toggled-el (if raw?
+                       (render obj)
+                       (render-with "default" obj))]
+      (set-attributes! toggled-el {:style {:position "absolute"}})
+      (replace-element el toggled-el))))
+
 (doto js/document
   (.addEventListener "mousedown" start-move-obj)
   (.addEventListener "mousemove" move-obj)
-  (.addEventListener "mouseup" stop-move-obj))
+  (.addEventListener "mouseup" stop-move-obj)
+
+  (.addEventListener "mousedown" toggle-raw-view))

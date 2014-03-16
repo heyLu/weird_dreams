@@ -1,5 +1,18 @@
 (ns obj.render)
 
+(defn render-with [renderer obj]
+  (let [renderer (if (string? renderer)
+                   (get *renderers* renderer)
+                   renderer)
+        obj-el (renderer obj)]
+    (aset obj-el "obj" obj)
+    obj-el))
+
+(defn ^:export render [obj]
+  (let [renderer (or (get *renderers* (.-type obj))
+                     (get *renderers* "default"))]
+    (render-with renderer obj)))
+
 (defn set-attributes! [obj attributes]
   (doseq [[k v] attributes]
     (if (map? v)
@@ -18,7 +31,10 @@
   {"default" (fn [obj]
               (create-element "code"
                               :textContent (js/JSON.stringify obj nil "  ")
-                              :contentEditable true))
+                              :contentEditable true
+                              :oninput (fn [ev]
+                                         (let [el (.-target ev)]
+                                           (aset el "obj" (js/JSON.parse (.-textContent el)))))))
    "audio" (fn [obj]
             (create-element "audio"
                             :controls true
@@ -55,9 +71,10 @@
                                           (fn [ev]
                                             (when (not (.-ctrlKey ev))
                                               (.playPause (js/vimeo iframe))))))))
+   "list" (fn [obj]
+            (let [list (create-element "ul")]
+              (doseq [child-obj (.-children obj)]
+                (.appendChild list (doto (create-element "li" :style {:pointerEvents "none"})
+                                     (.appendChild (render child-obj)))))
+              list))
   })
-
-(defn ^:export render [obj]
-  (let [renderer (or (get *renderers* (.-type obj))
-                     (get *renderers* "default"))]
-    (renderer obj)))
