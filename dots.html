@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+	<head>
+		<title>dots.</title>
+		<meta charset="utf-8" />
+
+		<style>
+			body { overflow: hidden; }
+		</style>
+	</head>
+
+	<body>
+		<canvas id="stage"></canvas>
+
+		<script>
+			var canvas = document.getElementById("stage");
+			var ctx = canvas.getContext("2d");
+			var w = canvas.width = window.innerWidth;
+			var h = canvas.height = window.innerHeight;
+
+			function range(from, to) {
+				var ary = [];
+				for (var i = 0; i < (to - from); i++) {
+					ary[i] = from + i;
+				}
+				return ary;
+			}
+
+			var l1 = range(0, 100).map(function(i) { return [5, h - i*5 - 15]; });
+			var l2 = range(0, 100).map(function(i) { return [i*5, h - 15]; }).reverse();
+
+			for (var i = 0; i < l1.length; i++) {
+				ctx.fillRect(l1[i][0], l1[i][1], 1, 1);
+				ctx.fillRect(l2[i][0], l2[i][1], 1, 1);
+			}
+
+			function connect(line1, line2) {
+				for (var i = 0; i < line1.length; i++) {
+					var p1 = line1[i];
+					var p2 = line2[i];
+
+					ctx.beginPath();
+					ctx.moveTo(p1[0], p1[1]);
+					ctx.lineTo(p2[0], p2[1]);
+					ctx.stroke();
+				}
+			}
+
+			connect(l1, l2);
+		</script>
+	</body>
+</html>
