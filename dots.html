@@ -87,10 +87,30 @@
 				color(selectors[1], selectedColors[1]);
 			});
 
+			function drawGroup(groupColor) {
+				var group = groups[groupColor];
+				ctx.fillColor = groupColor;
+				for (var i = 0; i < group.length; i++) {
+					ctx.fillRect(group[i][0], group[i][1], 3, 3);
+				}
+			}
+
+			function drawGroups() {
+				for (var groupColor in groups) {
+					drawGroup(groupColor);
+				}
+			}
+
 			window.addEventListener("keyup", function(ev) {
 				if (ev.ctrlKey) {
 					switch (ev.keyCode) {
-						case 67: // ctrl-c
+						case 13: // ctrl-enter, clear screen and redraw points
+							ctx.clearRect(0, 0, w, h);
+							drawGroups();
+						case 32: // ctrl-space, clear the current group
+							groups[currentGroup()] = [];
+							break;
+						case 67: // ctrl-c, reset
 							ctx.clearRect(0, 0, w, h);
 							groups = emptyGroups();
 							break;
