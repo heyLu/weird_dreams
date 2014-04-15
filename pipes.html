@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+	<head>
+		<title>pipes</title>
+		<meta charset="utf-8" />
+
+		<style>
+			body {
+				margin: 0 auto;
+				width: 80%;
+			}
+
+			textarea {
+				display: block;
+				width: 100%;
+				max-width: 100%;
+				margin-bottom: 1em;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h1>pipes - Programming with live examples</h1>
+
+		<p>Writing functions alongside with seeing their input and output
+		change as you type. Maybe we could have something like this in
+		something bigger? Maybe even several inputs or even test cases?</p>
+
+		<textarea id="input0">"Hello, World! This is a world. Or something. Anyway, are you having fun yet?"</textarea>
+
+		<textarea id="fun0" class="function" data-input-from="input0">return input.split(" ");</textarea>
+
+		<script>
+			var functions = [].slice.call(document.querySelectorAll(".function"));
+			functions.forEach(function(f) {
+				var inputEl = document.getElementById(f.dataset.inputFrom);
+				var targetEl = document.createElement("textarea");
+
+				var recalculate = function() {
+					try {
+						var input = JSON.parse(inputEl.value);
+						var fun = new Function("input", f.value);
+						targetEl.textContent = JSON.stringify(fun(input));
+					} catch (e) {
+						targetEl.textContent = e;
+					}
+				};
+
+				inputEl.oninput = recalculate;
+				f.oninput = recalculate;
+
+				recalculate();
+				document.body.appendChild(targetEl);
+			});
+		</script>
+	</body>
+</html>
