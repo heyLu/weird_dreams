@@ -13,7 +13,7 @@
 			textarea {
 				display: block;
 				width: 100%;
-				max-width: 100%;
+				resize: vertical;
 				margin-bottom: 1em;
 			}
 		</style>
@@ -26,32 +26,55 @@
 		change as you type. Maybe we could have something like this in
 		something bigger? Maybe even several inputs or even test cases?</p>
 
-		<textarea id="input0">"Hello, World! This is a world. Or something. Anyway, are you having fun yet?"</textarea>
+		<div id="fun0"></div>
 
-		<textarea id="fun0" class="function" data-input-from="input0">return input.split(" ");</textarea>
+		<h3>Another function</h3>
 
+		<div id="fun1"></div>
+
+		<script src="http://facebook.github.io/react/js/react.js"></script>
 		<script>
-			var functions = [].slice.call(document.querySelectorAll(".function"));
-			functions.forEach(function(f) {
-				var inputEl = document.getElementById(f.dataset.inputFrom);
-				var targetEl = document.createElement("textarea");
+			var evaluate = function(functionObject) {
+				try {
+					var f = new Function("input", functionObject.code);
+					return JSON.stringify(f(functionObject.input));
+				} catch (e) {
+					return e;
+				}
+			};
 
-				var recalculate = function() {
-					try {
-						var input = JSON.parse(inputEl.value);
-						var fun = new Function("input", f.value);
-						targetEl.textContent = JSON.stringify(fun(input));
-					} catch (e) {
-						targetEl.textContent = e;
+			var InteractiveFunction = React.createClass({
+				getInitialState: function() {
+					return {input: this.props.input, code: this.props.code, result: ""};
+				},
+				stateFromValue: function(stateField) {
+					var that = this;
+					return function(ev) {
+						var changedState = {};
+						changedState[stateField] = ev.target.value;
+						that.setState(changedState);
 					}
-				};
+				},
+				render: function() {
+					var that = this;
 
-				inputEl.oninput = recalculate;
-				f.oninput = recalculate;
-
-				recalculate();
-				document.body.appendChild(targetEl);
+					var input = React.DOM.textarea({defaultValue: this.state.input, onChange: this.stateFromValue('input')});
+					var fun = React.DOM.textarea({defaultValue: this.state.code, onChange: this.stateFromValue('code')});
+					var result = React.DOM.textarea({value: evaluate(this.state), readOnly: true});
+					return React.DOM.div(null, input, fun, result);
+				}
 			});
+
+			React.renderComponent(InteractiveFunction({
+					input: "Hello, World! This is a world. Or something.  Anyway, are you having fun yet?",
+					code: "return input.split(\" \");",
+				}),
+				document.getElementById("fun0"));
+
+			React.renderComponent(InteractiveFunction({
+					code: "return new Date()"
+				}),
+				document.getElementById("fun1"));
 		</script>
 	</body>
 </html>
