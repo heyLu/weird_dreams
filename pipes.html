@@ -62,7 +62,7 @@
 				render: function() {
 					var that = this;
 
-					var input = React.DOM.textarea({defaultValue: this.state.input, onChange: this.stateFromValue('input')});
+					var input = React.DOM.textarea({placeholder: "JSON or strings", defaultValue: this.state.input, onChange: this.stateFromValue('input')});
 					var prelude = React.DOM.pre(null, "function(input) {");
 					var fin = React.DOM.pre(null, "}");
 					var fun = React.DOM.textarea({defaultValue: this.state.code, onChange: this.stateFromValue('code')});
