@@ -59,9 +59,11 @@
 					var that = this;
 
 					var input = React.DOM.textarea({defaultValue: this.state.input, onChange: this.stateFromValue('input')});
+					var prelude = React.DOM.pre(null, "function(input) {");
+					var fin = React.DOM.pre(null, "}");
 					var fun = React.DOM.textarea({defaultValue: this.state.code, onChange: this.stateFromValue('code')});
 					var result = React.DOM.textarea({value: evaluate(this.state), readOnly: true});
-					return React.DOM.div(null, input, fun, result);
+					return React.DOM.div(null, input, prelude, fun, fin, result);
 				}
 			});
 
