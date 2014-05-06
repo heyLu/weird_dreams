@@ -37,7 +37,11 @@
 			var evaluate = function(functionObject) {
 				try {
 					var f = new Function("input", functionObject.code);
-					return JSON.stringify(f(functionObject.input));
+					var input = functionObject.input;
+					try {
+						input = JSON.parse(functionObject.input);
+					} catch (e) {}
+					return JSON.stringify(f(input));
 				} catch (e) {
 					return e;
 				}
