@@ -37,7 +37,11 @@
 			var evaluate = function(functionObject) {
 				try {
 					var f = new Function("input", functionObject.code);
-					return JSON.stringify(f(functionObject.input));
+					var input = functionObject.input;
+					try {
+						input = JSON.parse(functionObject.input);
+					} catch (e) {}
+					return JSON.stringify(f(input));
 				} catch (e) {
 					return e;
 				}
@@ -58,10 +62,12 @@
 				render: function() {
 					var that = this;
 
-					var input = React.DOM.textarea({defaultValue: this.state.input, onChange: this.stateFromValue('input')});
+					var input = React.DOM.textarea({placeholder: "JSON or strings", defaultValue: this.state.input, onChange: this.stateFromValue('input')});
+					var prelude = React.DOM.pre(null, "function(input) {");
+					var fin = React.DOM.pre(null, "}");
 					var fun = React.DOM.textarea({defaultValue: this.state.code, onChange: this.stateFromValue('code')});
 					var result = React.DOM.textarea({value: evaluate(this.state), readOnly: true});
-					return React.DOM.div(null, input, fun, result);
+					return React.DOM.div(null, input, prelude, fun, fin, result);
 				}
 			});
 
