@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+	<head>
+		<title>pipes</title>
+		<meta charset="utf-8" />
+
+		<style>
+			body {
+				margin: 0 auto;
+				width: 80%;
+			}
+
+			textarea {
+				display: block;
+				width: 100%;
+				resize: vertical;
+				margin-bottom: 1em;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h1>pipes - Programming with live examples</h1>
+
+		<p>Writing functions alongside with seeing their input and output
+		change as you type. Maybe we could have something like this in
+		something bigger? Maybe even several inputs or even test cases?</p>
+
+		<div id="fun0"></div>
+
+		<h3>Another function</h3>
+
+		<div id="fun1"></div>
+
+		<script src="http://facebook.github.io/react/js/react.js"></script>
+		<script>
+			var evaluate = function(functionObject) {
+				try {
+					var f = new Function("input", functionObject.code);
+					return JSON.stringify(f(functionObject.input));
+				} catch (e) {
+					return e;
+				}
+			};
+
+			var InteractiveFunction = React.createClass({
+				getInitialState: function() {
+					return {input: this.props.input, code: this.props.code, result: ""};
+				},
+				stateFromValue: function(stateField) {
+					var that = this;
+					return function(ev) {
+						var changedState = {};
+						changedState[stateField] = ev.target.value;
+						that.setState(changedState);
+					}
+				},
+				render: function() {
+					var that = this;
+
+					var input = React.DOM.textarea({defaultValue: this.state.input, onChange: this.stateFromValue('input')});
+					var fun = React.DOM.textarea({defaultValue: this.state.code, onChange: this.stateFromValue('code')});
+					var result = React.DOM.textarea({value: evaluate(this.state), readOnly: true});
+					return React.DOM.div(null, input, fun, result);
+				}
+			});
+
+			React.renderComponent(InteractiveFunction({
+					input: "Hello, World! This is a world. Or something.  Anyway, are you having fun yet?",
+					code: "return input.split(\" \");",
+				}),
+				document.getElementById("fun0"));
+
+			React.renderComponent(InteractiveFunction({
+					code: "return new Date()"
+				}),
+				document.getElementById("fun1"));
+		</script>
+	</body>
+</html>
