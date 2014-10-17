@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+	<head>
+		<title>random kitten!</title>
+		<meta charset="utf-8" />
+		<style type="text/css">
+			body {
+				margin: 0;
+			}
+
+			#kitten {
+				background: url(http://thecatapi.com/api/images/get?format=src&size=full);
+				background-size: contain;
+				background-repeat: no-repeat;
+				background-position: center;
+				width: 100vw;
+				height: 100vh;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="kitten"></div>
+
+		<script>
+			var kittenRefreshTime = 60 * 1000;
+
+			setTimeout(function() {
+				window.location.reload();
+			}, kittenRefreshTime);
+		</script>
+	</body>
+</html>
