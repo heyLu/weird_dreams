@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+	<head>
+		<title>words</title>
+		<meta charset="utf8" />
+		<style>
+			@import url(http://fonts.googleapis.com/css?family=Vollkorn);
+
+			body {
+				cursor: none;
+				width: 100vw;
+				height: 100vh;
+				margin: 0;
+			}
+
+			#word {
+				margin: 0;
+				padding-top: calc(50vh - 0.75em);
+				text-align: center;
+				font-size: 100pt;
+				font-family: 'Vollkorn', serif;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h1 id="word">words</h1>
+
+		<script>
+			var thePlace = document.querySelector("#word");
+			var aWhile = 10 * 60 * 1000;
+
+			var words = ["love", "long", "lost", "longing", "confused",
+				"they", "strange", "close", "distant", "everything"];
+
+			function change() {
+				var word = words[Math.floor(Math.random() * words.length)];
+				window.title = word;
+				thePlace.textContent = word;
+
+				setTimeout(change, Math.random() * aWhile);
+			}
+
+			setTimeout(change, Math.random() * aWhile);
+		</script>
+	</body>
+</html>
