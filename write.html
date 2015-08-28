@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<style>
-			#content {
+			.pretty-content {
 				font-family: "Liberation Mono", monospace;
 				margin: auto calc(50vw - 25em);
 				max-width: 50em;
@@ -11,77 +11,77 @@
 				outline: none;
 			}
 
-			#content h1, #content h2, #content h3,
-			#content h4, #content h5, #content h6 {
+			.pretty-content h1, .pretty-content h2, .pretty-content h3,
+			.pretty-content h4, .pretty-content h5, .pretty-content h6 {
 				font-size: 100%;
 				margin: 16px 0;
 			}
 
-			#content h1:before {
+			.pretty-content h1:before {
 				position: absolute;
 				left: -2ex;
 				content: "#";
 			}
 
-			#content h2:before {
+			.pretty-content h2:before {
 				position: absolute;
 				left: -3ex;
 				content: "##";
 			}
 
-			#content h3:before {
+			.pretty-content h3:before {
 				position: absolute;
 				left: -4ex;
 				content: "###";
 			}
 
-			#content h4:before {
+			.pretty-content h4:before {
 				position: absolute;
 				left: -5ex;
 				content: "####";
 			}
 
-			#content ul, #content ol {
+			.pretty-content ul, .pretty-content ol {
 				padding-left: 0;
 			}
 
-			#content ul {
+			.pretty-content ul {
 				list-style-type: none;
 			}
 
-			#content ul li:before {
+			.pretty-content ul li:before {
 				position: absolute;
 				left: -2ex;
 				content: "*";
 			}
 
-			#content blockquote:before {
+			.pretty-content blockquote:before {
 				content: "> ";
 			}
 
-			#content em:before, #content em:after {
+			.pretty-content em:before, .pretty-content em:after {
 				content: "*";
 			}
 
-			#content strong:before, #content strong:after {
+			.pretty-content strong:before, .pretty-content strong:after {
 				content: "**";
 			}
 
 			/*
 			 * Focus mode
 			 */
-			#content.focus-mode {
+			.pretty-content.focus-mode {
 				color: #ddd;
 			}
 
-			#content.focus-mode .focus-active {
+			.pretty-content.focus-mode .focus-active {
 				color: #000;
 			}
 		</style>
 	</head>
 
 	<body>
-		<section id="content" contentEditable>
+		<section id="content" class="pretty-content" contentEditable>
 			<h1>Hello, World!</h1>
 
 			<p>This is a thing, a real thing!</p>
