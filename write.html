@@ -1,0 +1,235 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<style>
+			#content {
+				font-family: "Liberation Mono", monospace;
+				margin: auto calc(50vw - 25em);
+				max-width: 50em;
+				position: relative;
+				outline: none;
+			}
+
+			#content h1, #content h2, #content h3,
+			#content h4, #content h5, #content h6 {
+				font-size: 100%;
+				margin: 16px 0;
+			}
+
+			#content h1:before {
+				position: absolute;
+				left: -2ex;
+				content: "#";
+			}
+
+			#content h2:before {
+				position: absolute;
+				left: -3ex;
+				content: "##";
+			}
+
+			#content h3:before {
+				position: absolute;
+				left: -4ex;
+				content: "###";
+			}
+
+			#content h4:before {
+				position: absolute;
+				left: -5ex;
+				content: "####";
+			}
+
+			#content ul, #content ol {
+				padding-left: 0;
+			}
+
+			#content ul {
+				list-style-type: none;
+			}
+
+			#content ul li:before {
+				position: absolute;
+				left: -2ex;
+				content: "*";
+			}
+
+			#content blockquote:before {
+				content: "> ";
+			}
+
+			#content em:before, em:after {
+				content: "*";
+			}
+
+			#content strong:before, strong:after {
+				content: "**";
+			}
+
+			/*
+			 * Focus mode
+			 */
+			#content.focus-mode {
+				color: #ddd;
+			}
+
+			#content.focus-mode .focus-active {
+				color: #000;
+			}
+		</style>
+	</head>
+
+	<body>
+		<section id="content" contentEditable>
+			<h1>Hello, World!</h1>
+
+			<p>This is a thing, a real thing!</p>
+
+			<p>There's lists:</p>
+
+			<ul>
+				<li>With</li>
+				<li>things</li>
+				<li>in them</li>
+			</ul>
+
+			<p>Even numbered lists:</p>
+
+			<ol>
+				<li>With</li>
+				<li>more things</li>
+				<li>3, 4, 6 (are bigger than 0, 1, 2 and 3)</li>
+			</ol>
+
+			<p>We can also quote people, even famous people:</p>
+
+			<blockquote>
+				Someone said this, sometime!
+			</blockquote>
+
+			<p>Now, let's write something <em>really</em> long.  Like, so
+			long that you need to take a break.  At least sometime, we
+			don't know when the right time to take a break is.  But what we
+			<em>do</em> know, is that you just have to take a break from
+			time to time...  (Just, not <em>right now</em> you know.  Yeah,
+			you know you're kidding yourself.)</p>
+
+			<p>That's not even it, yet!</p>
+
+			<h2>Subheadings</h2>
+
+			<p>And more text</p>
+
+			<h3>Down the rabbit hole</h3>
+
+			<p>Maybe some stuff is just <em>important</em>?</p>
+
+			<p>Yeah, <strong>maybe</strong>!</p>
+
+			<h1>One</h1>
+			<h2>Two</h2>
+			<h3>Three</h3>
+			<h4>Four</h4>
+
+			<h2>Nested lists ...</h2>
+
+			<p>And now, let's put some lists inside lists...</p>
+
+			<!--<ul>
+				<li>
+					<ul>
+						<li>One</li>
+						<li>Two</li>
+					</ul>
+				</li>
+				<li>
+					<ol>
+						<li>Four</li>
+						<li>
+							<ol>
+								<li>Five</li>
+								<li>Six<li>
+							</ol>
+						</li>
+					</ol>
+				</li>
+				<li>Seven</li>
+			</ul>-->
+		</section>
+
+		<script>
+			/*
+			 * Align heading indicators
+			 */
+
+			function measureText(str) {
+				var canvas = measureText.canvas || (measureText.canvas = document.createElement("canvas"));
+				var context = canvas.getContext("2d");
+				context.font = "16px \"Liberation Mono\", monospace";
+				return context.measureText(str).width;
+			}
+
+			function makeStyle(heading, prefix) {
+				var offset = measureText(prefix);
+				return `#content ${heading}:before {
+	left: inherit;
+	margin-left: calc(-${offset}px);
+}
+
+`
+			}
+
+			var headingStyles = document.createElement("style");
+			headingStyles.textContent += makeStyle("h1", "# ");
+			headingStyles.textContent += makeStyle("h2", "## ");
+			headingStyles.textContent += makeStyle("h3", "### ");
+			headingStyles.textContent += makeStyle("h4", "#### ");
+			document.head.appendChild(headingStyles);
+
+			/*
+			 * Focus mode
+			 */
+			var focusMode = false;
+			var contentEl = document.getElementById("content");
+			var activeEl = null;
+
+			function doFocus(target) {
+					if (activeEl != null) {
+						activeEl.classList.remove("focus-active");
+					}
+
+					activeEl = target;
+					activeEl.classList.add("focus-active");
+
+			}
+
+			window.addEventListener("keydown", function(ev) {
+				if (ev.ctrlKey && ev.keyCode == 68) { // Ctrl + D
+					if (focusMode) {
+						contentEl.classList.remove("focus-mode");
+					} else {
+						contentEl.classList.add("focus-mode");
+					}
+					focusMode = !focusMode;
+
+					doFocus(contentEl.firstElementChild);
+					activeEl.focus();
+				}
+			});
+
+			contentEl.addEventListener("click", function(ev) {
+				if (focusMode) {
+					doFocus(ev.target);
+				}
+			});
+
+			contentEl.addEventListener("keyup", function(ev) {
+				var selection = document.getSelection();
+				if (focusMode) {
+					doFocus(selection.focusNode.parentElement);
+				}
+			});
+		</script>
+	</body>
+</html>
