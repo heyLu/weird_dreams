@@ -205,11 +205,23 @@
 			//var contentEl = document.getElementById("content");
 			var activeEl = null;
 
+			var segments = new Set(["H1", "H2", "H3", "H4", "H5", "H6", "P", "LI"]);
+			function isSegment(el) {
+				return el.nodeType == Node.ELEMENT_NODE && segments.has(el.tagName);
+			}
+
 			function doFocus(target) {
 					if (activeEl != null) {
 						activeEl.classList.remove("focus-active");
+						activeEl = null;
 					}
 
+					while (target != contentEl && !isSegment(target)) {
+						target = target.parentElement;
+					}
+					if (target == contentEl) {
+						return
+					}
 					activeEl = target;
 					activeEl.classList.add("focus-active");
 
