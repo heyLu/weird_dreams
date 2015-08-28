@@ -162,6 +162,13 @@
 			</ul>-->
 		</section>
 
+		<div id="editor"></div>
+		<script src="write-all.js"></script>
+		<script>
+			pm.content.classList.add("pretty-content");
+			var contentEl = pm.content;
+		</script>
+
 		<script>
 			/*
 			 * Align heading indicators
@@ -195,7 +202,7 @@
 			 * Focus mode
 			 */
 			var focusMode = false;
-			var contentEl = document.getElementById("content");
+			//var contentEl = document.getElementById("content");
 			var activeEl = null;
 
 			function doFocus(target) {
@@ -234,12 +241,6 @@
 					doFocus(selection.focusNode.parentElement);
 				}
 			});
-		</script>
-
-		<div id="editor"></div>
-		<script src="write-all.js"></script>
-		<script>
-			pm.content.classList.add("pretty-content");
 		</script>
 	</body>
 </html>
