@@ -176,7 +176,7 @@
 
 			function makeStyle(heading, prefix) {
 				var offset = measureText(prefix);
-				return `#content ${heading}:before {
+				return `.pretty-content ${heading}:before {
 	left: inherit;
 	margin-left: calc(-${offset}px);
 }
