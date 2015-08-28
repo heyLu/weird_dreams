@@ -77,6 +77,10 @@
 			.pretty-content.focus-mode .focus-active {
 				color: #000;
 			}
+
+			#content {
+				display: none;
+			}
 		</style>
 	</head>
 
@@ -230,6 +234,12 @@
 					doFocus(selection.focusNode.parentElement);
 				}
 			});
+		</script>
+
+		<div id="editor"></div>
+		<script src="write-all.js"></script>
+		<script>
+			pm.content.classList.add("pretty-content");
 		</script>
 	</body>
 </html>
