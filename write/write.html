@@ -272,7 +272,7 @@ int main(void) {
 			//var contentEl = document.getElementById("content");
 			var activeEl = null;
 
-			var segments = new Set(["H1", "H2", "H3", "H4", "H5", "H6", "P", "LI"]);
+			var segments = new Set(["H1", "H2", "H3", "H4", "H5", "H6", "P", "LI", "PRE"]);
 			function isSegment(el) {
 				return el.nodeType == Node.ELEMENT_NODE && segments.has(el.tagName);
 			}
