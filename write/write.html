@@ -71,6 +71,26 @@
 				content: "**";
 			}
 
+			.pretty-content code, .pretty-content pre > code {
+				font: inherit;
+			}
+
+			.pretty-content code:before, .pretty-content code:after {
+				content: "`";
+			}
+
+			.pretty-content pre:before {
+				content: "```";
+			}
+
+			.pretty-content pre:after {
+				content: "```";
+			}
+
+			.pretty-content pre > code:before, .pretty-content pre > code:after {
+				display: none;
+			}
+
 			/*
 			 * Focus mode
 			 */
@@ -93,8 +113,7 @@
 			<h1>TODO</h1>
 
 			<ul>
-				<li>support for <code>code</code> (both inline and code
-				blocks)</li>
+				<li>prettier <code>code</code> blocks</li>
 				<li>support for <code>**</code> and <code>__</code></li>
 				<li>focus mode improvements (highlight sentences)</li>
 				<li>and more (lists with paragraphs, nested lists, ...)</li>
@@ -174,6 +193,18 @@
 				</li>
 				<li>Seven</li>
 			</ul>-->
+
+			<h2>Code blocks</h2>
+
+			<p>Can we do them?</p>
+
+			<pre><code>
+#include &lt;stdio.h&gt;
+
+int main(void) {
+	printf("Hello, World!\n");
+}
+</code></pre>
 		</section>
 
 		<div id="editor"></div>
