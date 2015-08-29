@@ -91,6 +91,22 @@
 				display: none;
 			}
 
+			.pretty-content a {
+				color: #000;
+			}
+
+			.pretty-content a:before, .pretty-content a:after {
+				color: #626262;
+			}
+
+			.pretty-content a:before {
+				content: "[";
+			}
+
+			.pretty-content a:after {
+				content: "](" attr(href) ")";
+			}
+
 			/*
 			 * Focus mode
 			 */
@@ -205,6 +221,13 @@ int main(void) {
 	printf("Hello, World!\n");
 }
 </code></pre>
+
+			<h2>Oh, almost forgot...</h2>
+
+			<p>Have we got <em>links</em>?</p>
+
+			<p>Maybe <a href="https://which.is/ama-/Z/ing!">we have</a>, but maybe not, we'll know
+			sometime.</p>
 		</section>
 
 		<div id="editor"></div>
