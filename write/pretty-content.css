@@ -4,6 +4,7 @@
 	position: relative;
 	outline: none;
 	color: 424242;
+	transition: color 100ms;
 }
 
 .pretty-content * {
