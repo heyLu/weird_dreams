@@ -18,12 +18,23 @@ let additionalRules = [
 	new Rule("_", /_\w+(?: \w+)*_/, (pm, match, pos) => wrapInline(pm, match, pos, style.em))
 ];
 
-function find(f, vals, offset) {
+function lastIndexOf(str, vals, offset) {
 	let idx = -1;
 	for (let i = 0; i < vals.length; i++) {
-		idx = f(vals[i], offset);
-		if (idx != -1) {
-			return idx
+		let newIdx = str.lastIndexOf(vals[i], offset);
+		if (idx == -1 || newIdx != -1 && newIdx > idx) {
+			idx = newIdx
+		}
+	}
+	return idx
+}
+
+function indexOf(str, vals, offset) {
+	let idx = -1;
+	for (let i = 0; i < vals.length; i++) {
+		let newIdx = str.indexOf(vals[i], offset);
+		if (idx == -1 || newIdx != -1 && newIdx < idx) {
+			idx = newIdx
 		}
 	}
 	return idx
@@ -36,9 +47,8 @@ let _ = window.ProseMirror = function(options) {
 		var path = pm.selection.anchor.path;
 		var node = pm.doc.path(path);
 		var offset = pm.selection.head.offset;
-		var content = node.textContent;
-		var start = find(content.lastIndexOf.bind(content), [". ", "? ", "! "], offset);
-		var end = find(content.indexOf.bind(content), [". ", "? ", "! "], offset);
+		var start = lastIndexOf(node.textContent, [". ", "? ", "! "], offset);
+		var end = indexOf(node.textContent, [". ", "? ", "! "], offset);
 		return {
 			from: new Pos(path.slice(), start == -1 ? 0 : start + 2),
 			to: new Pos(path.slice(), end == -1 ? node.textContent.length : end + 1)
