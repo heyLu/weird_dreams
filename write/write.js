@@ -18,10 +18,8 @@ let additionalRules = [
 	new Rule("_", /_\w+(?: \w+)*_/, (pm, match, pos) => wrapInline(pm, match, pos, style.em))
 ];
 
-let pm = window.pm = new ProseMirror({
-	place: document.querySelector("#editor"),
-	autoInput: true,
-	doc: document.querySelector("#content"),
-	docFormat: "dom"
-});
-addInputRules(pm, additionalRules);
+let _ = window.ProseMirror = function(options) {
+	let pm = new ProseMirror(options);
+	addInputRules(pm, additionalRules);
+	return pm;
+}

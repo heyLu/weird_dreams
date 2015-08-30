@@ -118,6 +118,12 @@ int main(void) {
 		<div id="editor" spellcheck="false"></div>
 		<script src="write-all.js"></script>
 		<script>
+			var pm = ProseMirror({
+				place: document.querySelector("#editor"),
+				autoInput: true,
+				doc: document.querySelector("#content"),
+				docFormat: "dom"
+			});
 			pm.content.classList.add("pretty-content");
 			var contentEl = pm.content;
 		</script>
