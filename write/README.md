@@ -3,6 +3,8 @@
 Inspired by iA Writer and the recent release of
 [ProseMirror](http://prosemirror.net).
 
+Try it out at <https://heylu.github.io/weird_dreams/write/>.
+
 ## Quickstart
 
 ```
