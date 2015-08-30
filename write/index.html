@@ -163,28 +163,16 @@ int main(void) {
 			 */
 			var focusMode = false;
 			//var contentEl = document.getElementById("content");
-			var activeEl = null;
+			var activeRange = null;
 
-			var segments = new Set(["H1", "H2", "H3", "H4", "H5", "H6", "P", "LI", "PRE"]);
-			function isSegment(el) {
-				return el.nodeType == Node.ELEMENT_NODE && segments.has(el.tagName);
-			}
-
-			function doFocus(target) {
-					if (activeEl != null) {
-						activeEl.classList.remove("focus-active");
-						activeEl = null;
+			function doFocus() {
+					if (activeRange != null) {
+						pm.removeRange(activeRange);
+						activeRange = null;
 					}
 
-					while (target != contentEl && !isSegment(target)) {
-						target = target.parentElement;
-					}
-					if (target == contentEl) {
-						return
-					}
-					activeEl = target;
-					activeEl.classList.add("focus-active");
-
+					var currentSentence = pm.currentSentence();
+					activeRange = pm.markRange(currentSentence.from, currentSentence.to, {className: "focus-active"});
 			}
 
 			window.addEventListener("keydown", function(ev) {
@@ -196,8 +184,7 @@ int main(void) {
 					}
 					focusMode = !focusMode;
 
-					doFocus(contentEl.firstElementChild);
-					activeEl.focus();
+					doFocus();
 
 					ev.preventDefault();
 				}
@@ -205,14 +192,13 @@ int main(void) {
 
 			contentEl.addEventListener("click", function(ev) {
 				if (focusMode) {
-					doFocus(ev.target);
+					doFocus();
 				}
 			});
 
 			contentEl.addEventListener("keyup", function(ev) {
-				var selection = document.getSelection();
 				if (focusMode) {
-					doFocus(selection.focusNode.parentElement);
+					doFocus();
 				}
 			});
 		</script>
