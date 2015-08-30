@@ -7005,6 +7005,28 @@ var additionalRules = [new _prosemirrorDistInputrulesInputrules.Rule("`", /\`\w+
 	return wrapInline(pm, match, pos, _prosemirrorDistModel.style.em);
 })];
 
+function lastIndexOf(str, vals, offset) {
+	var idx = -1;
+	for (var i = 0; i < vals.length; i++) {
+		var newIdx = str.lastIndexOf(vals[i], offset);
+		if (idx == -1 || newIdx != -1 && newIdx > idx) {
+			idx = newIdx;
+		}
+	}
+	return idx;
+}
+
+function indexOf(str, vals, offset) {
+	var idx = -1;
+	for (var i = 0; i < vals.length; i++) {
+		var newIdx = str.indexOf(vals[i], offset);
+		if (idx == -1 || newIdx != -1 && newIdx < idx) {
+			idx = newIdx;
+		}
+	}
+	return idx;
+}
+
 var _ = window.ProseMirror = function (options) {
 	var pm = new _prosemirrorDistEdit.ProseMirror(options);
 	(0, _prosemirrorDistInputrulesInputrules.addInputRules)(pm, additionalRules);
@@ -7012,12 +7034,19 @@ var _ = window.ProseMirror = function (options) {
 		var path = pm.selection.anchor.path;
 		var node = pm.doc.path(path);
 		var offset = pm.selection.head.offset;
-		var start = node.textContent.lastIndexOf(". ", offset);
-		var end = node.textContent.indexOf(". ", offset);
+		var start = lastIndexOf(node.textContent, [". ", "? ", "! "], offset);
+		var end = indexOf(node.textContent, [". ", "? ", "! "], offset);
 		return {
 			from: new _prosemirrorDistModel.Pos(path.slice(), start == -1 ? 0 : start + 2),
 			to: new _prosemirrorDistModel.Pos(path.slice(), end == -1 ? node.textContent.length : end + 1)
 		};
+	};
+
+	pm.getTitle = function () {
+		if (pm.doc.content.length > 0) {
+			return pm.doc.content[0].textContent;
+		}
+		return null;
 	};
 	return pm;
 };
