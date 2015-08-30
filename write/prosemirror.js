@@ -1,8 +1,8 @@
-import {ProseMirror} from "./prosemirror-dist/edit"
-import {Span, style} from "./prosemirror-dist/model"
-import {addInputRules, Rule} from "./prosemirror-dist/inputrules/inputrules"
-import "./prosemirror-dist/inputrules/autoinput"
-import "./prosemirror-dist/convert/to_markdown"
+import {ProseMirror} from "./prosemirror/dist/edit"
+import {Span, style} from "./prosemirror/dist/model"
+import {addInputRules, Rule} from "./prosemirror/dist/inputrules/inputrules"
+import "./prosemirror/dist/inputrules/autoinput"
+import "./prosemirror/dist/convert/to_markdown"
 
 function wrapInline(pm, match, pos, style) {
 	let start = pos.shift(-(match[0].length));

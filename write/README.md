@@ -13,7 +13,6 @@ $ git clone git://github.com/Prosemirror/prosemirror
 $ cd prosemirror
 $ npm run dist
 $ cd ..
-$ cp -R prosemirror/dist prosemirror-dist
 
 # Install dependencies and build js
 $ npm install
