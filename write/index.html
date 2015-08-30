@@ -126,6 +126,12 @@ int main(void) {
 			});
 			pm.content.classList.add("pretty-content");
 			var contentEl = pm.content;
+
+			function setTitle() {
+				var title = pm.getTitle();
+				document.title = title ? `${title} - just write` : "just write";
+			}
+			setTitle();
 		</script>
 
 		<script>
@@ -218,6 +224,8 @@ int main(void) {
 			});
 
 			pm.on("change", function() {
+				setTitle();
+
 				if (focusMode) {
 					doFocus();
 				}

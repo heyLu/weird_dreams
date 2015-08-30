@@ -54,5 +54,12 @@ let _ = window.ProseMirror = function(options) {
 			to: new Pos(path.slice(), end == -1 ? node.textContent.length : end + 1)
 		}
 	}
+
+	pm.getTitle = function() {
+		if (pm.doc.content.length > 0) {
+			return pm.doc.content[0].textContent;
+		}
+		return null;
+	}
 	return pm;
 }
