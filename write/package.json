@@ -1,0 +1,26 @@
+{
+  "name": "write",
+  "version": "0.0.1",
+  "description": "A simple writing environment",
+  "license": "MIT",
+  "repository": "heyLu/lp",
+  "maintainers": [
+    {
+      "name": "Lucas Stadler",
+      "email": "lu@papill0n.org"
+    }
+  ],
+  "dependencies": {
+    "insert-css": "^0.2.0",
+    "markdown-it": "^4.0.0"
+  },
+  "devDependencies": {
+    "babel": "^5.1.13",
+    "babelify": "^6.0.2",
+    "browserify": "^11.0.1",
+    "watchify": "^3.2.0"
+  },
+  "scripts": {
+  	  "dist": "node_modules/browserify/bin/cmd.js --transform babelify prosemirror.js --outfile prosemirror.compiled.js"
+  }
+}
