@@ -16,4 +16,6 @@ $ cp -R prosemirror/dist prosemirror-dist
 # Install dependencies and build js
 $ npm install
 $ npm run dist
+
+# Open `index.html` in your browser
 ```
