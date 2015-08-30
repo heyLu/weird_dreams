@@ -1,0 +1,117 @@
+.pretty-content {
+	margin: auto calc(50vw - 25em);
+	max-width: 50em;
+	position: relative;
+	outline: none;
+	color: 424242;
+}
+
+.pretty-content * {
+	font-family: "Liberation Mono", monospace;
+}
+
+.pretty-content h1, .pretty-content h2, .pretty-content h3,
+.pretty-content h4, .pretty-content h5, .pretty-content h6 {
+	font-size: 100%;
+	margin: 16px 0;
+}
+
+.pretty-content h1:before {
+	position: absolute;
+	left: -2ex;
+	content: "#";
+}
+
+.pretty-content h2:before {
+	position: absolute;
+	left: -3ex;
+	content: "##";
+}
+
+.pretty-content h3:before {
+	position: absolute;
+	left: -4ex;
+	content: "###";
+}
+
+.pretty-content h4:before {
+	position: absolute;
+	left: -5ex;
+	content: "####";
+}
+
+.pretty-content ul, .pretty-content ol {
+	padding-left: 0;
+}
+
+.pretty-content ul {
+	list-style-type: none;
+}
+
+.pretty-content ul li:before {
+	position: absolute;
+	left: -2ex;
+	content: "*";
+}
+
+.pretty-content blockquote:before {
+	content: "> ";
+}
+
+.pretty-content blockquote p:first-child {
+	display: inline-block;
+}
+
+.pretty-content em:before, .pretty-content em:after {
+	content: "*";
+}
+
+.pretty-content strong:before, .pretty-content strong:after {
+	content: "**";
+}
+
+.pretty-content code, .pretty-content pre > code {
+	font: inherit;
+}
+
+.pretty-content code:before, .pretty-content code:after {
+	content: "`";
+}
+
+.pretty-content pre:before {
+	content: "```";
+}
+
+.pretty-content pre:after {
+	content: "```";
+}
+
+.pretty-content pre > code:before, .pretty-content pre > code:after {
+	display: none;
+}
+
+.pretty-content a {
+	color: #424242;
+}
+
+.pretty-content a:before {
+	content: "[";
+}
+
+.pretty-content a:after {
+	content: "](" attr(href) ")";
+}
+
+/*
+ * Focus mode
+ */
+
+.pretty-content.focus-mode,
+.pretty-content.focus-mode a {
+	color: #ddd;
+}
+
+.pretty-content.focus-mode .focus-active,
+.pretty-content.focus-mode .focus-active a {
+	color: #424242;
+}
