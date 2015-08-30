@@ -64,10 +64,12 @@
 
 .pretty-content em:before, .pretty-content em:after {
 	content: "*";
+	font-style: normal;
 }
 
 .pretty-content strong:before, .pretty-content strong:after {
 	content: "**";
+	font-weight: initial;
 }
 
 .pretty-content code, .pretty-content pre > code {
