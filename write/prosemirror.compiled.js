@@ -6979,15 +6979,15 @@ module.exports = function (css, options) {
 },{}],44:[function(require,module,exports){
 "use strict";
 
-var _prosemirrorDistEdit = require("./prosemirror-dist/edit");
+var _prosemirrorDistEdit = require("./prosemirror/dist/edit");
 
-var _prosemirrorDistModel = require("./prosemirror-dist/model");
+var _prosemirrorDistModel = require("./prosemirror/dist/model");
 
-var _prosemirrorDistInputrulesInputrules = require("./prosemirror-dist/inputrules/inputrules");
+var _prosemirrorDistInputrulesInputrules = require("./prosemirror/dist/inputrules/inputrules");
 
-require("./prosemirror-dist/inputrules/autoinput");
+require("./prosemirror/dist/inputrules/autoinput");
 
-require("./prosemirror-dist/convert/to_markdown");
+require("./prosemirror/dist/convert/to_markdown");
 
 function wrapInline(pm, match, pos, style) {
 	var start = pos.shift(-match[0].length);
@@ -7008,7 +7008,18 @@ var additionalRules = [new _prosemirrorDistInputrulesInputrules.Rule("`", /\`\w+
 var _ = window.ProseMirror = function (options) {
 	var pm = new _prosemirrorDistEdit.ProseMirror(options);
 	(0, _prosemirrorDistInputrulesInputrules.addInputRules)(pm, additionalRules);
+	pm.currentSentence = function () {
+		var path = pm.selection.anchor.path;
+		var node = pm.doc.path(path);
+		var offset = pm.selection.head.offset;
+		var start = node.textContent.lastIndexOf(". ", offset);
+		var end = node.textContent.indexOf(". ", offset);
+		return {
+			from: new _prosemirrorDistModel.Pos(path.slice(), start == -1 ? 0 : start + 2),
+			to: new _prosemirrorDistModel.Pos(path.slice(), end == -1 ? node.textContent.length : end + 1)
+		};
+	};
 	return pm;
 };
 
-},{"./prosemirror-dist/convert/to_markdown":5,"./prosemirror-dist/edit":16,"./prosemirror-dist/inputrules/autoinput":24,"./prosemirror-dist/inputrules/inputrules":25,"./prosemirror-dist/model":27}]},{},[44]);
+},{"./prosemirror/dist/convert/to_markdown":5,"./prosemirror/dist/edit":16,"./prosemirror/dist/inputrules/autoinput":24,"./prosemirror/dist/inputrules/inputrules":25,"./prosemirror/dist/model":27}]},{},[44]);
