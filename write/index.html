@@ -196,7 +196,7 @@ int main(void) {
 				}
 			});
 
-			contentEl.addEventListener("keyup", function(ev) {
+			pm.on("change", function() {
 				if (focusMode) {
 					doFocus();
 				}
