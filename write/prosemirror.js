@@ -18,6 +18,17 @@ let additionalRules = [
 	new Rule("_", /_\w+(?: \w+)*_/, (pm, match, pos) => wrapInline(pm, match, pos, style.em))
 ];
 
+function find(f, vals, offset) {
+	let idx = -1;
+	for (let i = 0; i < vals.length; i++) {
+		idx = f(vals[i], offset);
+		if (idx != -1) {
+			return idx
+		}
+	}
+	return idx
+}
+
 let _ = window.ProseMirror = function(options) {
 	let pm = new ProseMirror(options);
 	addInputRules(pm, additionalRules);
@@ -25,8 +36,9 @@ let _ = window.ProseMirror = function(options) {
 		var path = pm.selection.anchor.path;
 		var node = pm.doc.path(path);
 		var offset = pm.selection.head.offset;
-		var start = node.textContent.lastIndexOf(". ", offset);
-		var end = node.textContent.indexOf(". ", offset);
+		var content = node.textContent;
+		var start = find(content.lastIndexOf.bind(content), [". ", "? ", "! "], offset);
+		var end = find(content.indexOf.bind(content), [". ", "? ", "! "], offset);
 		return {
 			from: new Pos(path.slice(), start == -1 ? 0 : start + 2),
 			to: new Pos(path.slice(), end == -1 ? node.textContent.length : end + 1)
